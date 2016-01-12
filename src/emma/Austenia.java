@@ -2,6 +2,7 @@ package emma;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Austenia{
 	
@@ -28,9 +29,22 @@ public class Austenia{
 		Locale hartford = new Locale("Hartford");
 //		hartford.addPerson(mrWoodhouse);
 	
-		System.out.println(mrWoodhouse.getTriviaQuestion().getTitle()+ "\n"+ mrWoodhouse.getTriviaQuestion().getDescription() + "\n" + mrWoodhouse.getTriviaQuestion().getQuestion() + "\nSelect from these choices: \n");
-		System.out.println(mrWoodhouse.getTriviaQuestion().getChoices());
+		System.out.println(mrWoodhouse.getTriviaQuestion().printQuestion());
 		
+		
+	    Scanner readIn = new Scanner(System.in);
+	    String userChoice = readIn.nextLine();
+	    int userString = Integer.parseInt(userChoice);
+	    readIn.close();            
+	    System.out.println("You chose number " + userChoice + ", " + 
+	    		mrWoodhouse.getTriviaQuestion().getChoices()[userString-1] + ".");
+	    
+	    if (mrWoodhouse.getTriviaQuestion().getAnswer() == mrWoodhouse.getTriviaQuestion().getChoices()[userString-1]){
+	    	System.out.println("you are correct!");
+	    }else{
+	    	System.out.println("Oops, that's wrong.");
+	    }
+	    
 //		System.out.println(mrWoodhouse.getTriviaQuestion().getTitle());
 	}
 

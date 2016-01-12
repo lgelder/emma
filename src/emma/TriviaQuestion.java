@@ -1,5 +1,6 @@
 package emma;
 
+
 public class TriviaQuestion {
 	private String title;
 	private String description;
@@ -15,6 +16,14 @@ public class TriviaQuestion {
 		this.question = question;
 		this.answer = answer;
 		this.choices = choices;
+	}
+	
+	public String printQuestion(){
+		String printOut = "";
+		printOut = getTitle()+ "\n" + getDescription() + "\n" +  getQuestion() + "\nEnter the number (1-3) of one of these choices: \n" + getStringChoices();
+		
+		
+		return printOut;
 	}
 	
 	public String getDescription() {
@@ -52,16 +61,27 @@ public class TriviaQuestion {
 		this.answer = answer;
 	}
 
-	public String getChoices() {
+	public String getStringChoices() {
 		String string = "";
-		for (int i = 0; i < 3; i++) {
-			string += choices[i] + "\n";
+		for (int i = 1; i < 4; i++) {
+			string += i + ". " + choices[i-1] + "\n";
 		}
 		return string;
+	}
+	
+	public String[] getChoices(){
+		return choices;
 	}
 
 	public void setChoices(String[] choices) {
 		this.choices = choices;
 	}
+//	public Option[] getChoices(){
+//		return choices;
+//	}
+//
+//	public void setChoices(Option[] choices) {
+//		this.choices = choices;
+//	}
 
 }

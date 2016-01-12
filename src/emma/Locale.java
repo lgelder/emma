@@ -1,12 +1,12 @@
 package emma;
 
-import java.util.ArrayList;
+import java.util.List;
 
 //a house or estate
 
 public class Locale {
 	private String name;
-	private ArrayList<Person> people;
+	private List<Person> people;
 	
 	public Locale(String name){
 		this.name = name;
@@ -16,7 +16,7 @@ public class Locale {
 		people.add(p);
 	}
 	
-	public ArrayList<Person> getPeople(){
+	public List<Person> getPeople(){
 		return people;
 	}
 
