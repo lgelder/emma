@@ -13,7 +13,7 @@ public class Austenia{
 				"Answer the multiple choice question.", "What is the name of Mr. Woodhouse's doctor?", 
 				"Mr. Perry", question1choices);
 		
-		
+		list.add(question1);
 		return list;
 	}
 	
@@ -21,7 +21,7 @@ public class Austenia{
 	
 	public static void main(String[] a){
 		
-		List<TriviaQuestion> listOfQuestions = createTQs();
+		List<TriviaQuestion> listOfQuestions = Austenia.createTQs();
 				
 		Person mrWoodhouse = new Person("Mr. Woodhouse", listOfQuestions.get(0));
 		
