@@ -1,20 +1,30 @@
 package emma;
 
+import java.util.List;
+
 public class TriviaQuestion {
 	private String title;
 	private String description;
 	private Boolean completed;
 	private String question;
 	private String answer;
-	private String[] choices;
+	private List<Option> choices;
 	
-	public TriviaQuestion(String title, String description, String question, String answer, String[] choices){
+	public TriviaQuestion(String title, String description, String question, String answer, List<Option> choices){
 		this.title = title;
 		this.description = description;
 		this.completed = false;
 		this.question = question;
 		this.answer = answer;
 		this.choices = choices;
+	}
+	
+	public String printQuestion(){
+		String printOut = "";
+		printOut = getTitle()+ "\n" + getDescription() + "\n" +  getQuestion() + "\nEnter a number (1-3): \n" + getStringChoices();
+		
+		
+		return printOut;
 	}
 	
 	public String getDescription() {
@@ -52,15 +62,27 @@ public class TriviaQuestion {
 		this.answer = answer;
 	}
 
-	public String getChoices() {
+	public String getStringChoices() {
 		String string = "";
 		for (int i = 0; i < 3; i++) {
-			string += choices[i] + "\n";
+			string += choices.get(i).stringOption() + "\n";
 		}
 		return string;
 	}
+	
+//	public String[] getChoices(){
+//		return choices;
+//	}
+//
+//	public void setChoices(String[] choices) {
+//		this.choices = choices;
+//	}
+	
+	public List<Option> getChoices(){
+		return choices;
+	}
 
-	public void setChoices(String[] choices) {
+	public void setChoices(List<Option> choices) {
 		this.choices = choices;
 	}
 
