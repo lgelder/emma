@@ -1,5 +1,6 @@
 package emma;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //a house or estate
@@ -10,6 +11,7 @@ public class Locale {
 	
 	public Locale(String name){
 		this.name = name;
+		people = new ArrayList<Person>();
 	}
 	
 	public void addPerson(Person p){

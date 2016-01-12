@@ -1,5 +1,6 @@
 package emma;
 
+import java.util.List;
 
 public class TriviaQuestion {
 	private String title;
@@ -7,9 +8,9 @@ public class TriviaQuestion {
 	private Boolean completed;
 	private String question;
 	private String answer;
-	private String[] choices;
+	private List<Option> choices;
 	
-	public TriviaQuestion(String title, String description, String question, String answer, String[] choices){
+	public TriviaQuestion(String title, String description, String question, String answer, List<Option> choices){
 		this.title = title;
 		this.description = description;
 		this.completed = false;
@@ -20,7 +21,7 @@ public class TriviaQuestion {
 	
 	public String printQuestion(){
 		String printOut = "";
-		printOut = getTitle()+ "\n" + getDescription() + "\n" +  getQuestion() + "\nEnter the number (1-3) of one of these choices: \n" + getStringChoices();
+		printOut = getTitle()+ "\n" + getDescription() + "\n" +  getQuestion() + "\nEnter a number (1-3): \n" + getStringChoices();
 		
 		
 		return printOut;
@@ -63,25 +64,26 @@ public class TriviaQuestion {
 
 	public String getStringChoices() {
 		String string = "";
-		for (int i = 1; i < 4; i++) {
-			string += i + ". " + choices[i-1] + "\n";
+		for (int i = 0; i < 3; i++) {
+			string += choices.get(i).stringOption() + "\n";
 		}
 		return string;
 	}
 	
-	public String[] getChoices(){
-		return choices;
-	}
-
-	public void setChoices(String[] choices) {
-		this.choices = choices;
-	}
-//	public Option[] getChoices(){
+//	public String[] getChoices(){
 //		return choices;
 //	}
 //
-//	public void setChoices(Option[] choices) {
+//	public void setChoices(String[] choices) {
 //		this.choices = choices;
 //	}
+	
+	public List<Option> getChoices(){
+		return choices;
+	}
+
+	public void setChoices(List<Option> choices) {
+		this.choices = choices;
+	}
 
 }

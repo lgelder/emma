@@ -9,9 +9,9 @@ public class Option {
 		this.text = description;
 	}
 	
-	public String printOption(){
+	public String stringOption(){
 		String phrase = "";
-		phrase = (String.valueOf(number) + text);
+		phrase = (String.valueOf(number) + ". " + text);
 		return phrase;
 	}
 	
