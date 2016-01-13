@@ -56,6 +56,17 @@ public class Austenia{
 				"Augusta", listOfOptions2);
 		listOfQuestions.add(question2);		
 		
+		List<String> listOfOptions3 = new ArrayList<String>();
+		listOfOptions3.add("Frank Churchill");
+		listOfOptions3.add("Mr. Elton");
+		listOfOptions3.add("Mr. Knightley");
+
+		List<Option> listOfOptions4 = createTQOptions(listOfOptions3);
+		TriviaQuestion question3 = new TriviaQuestion("Emma Woodhouse's Question", 
+			 "Which man did I mistakenly think Harriet was in love with?", 
+				"Frank Churchill", listOfOptions4);
+		listOfQuestions.add(question3);
+		
 		return listOfQuestions;
 	}
 	
@@ -65,15 +76,17 @@ public class Austenia{
 		Person mrWoodhouse = new Person("Mr. Woodhouse", listOfQuestions.get(0));
 		
 		Person mrsElton = new Person("Mrs. Elton", listOfQuestions.get(1));
+		Person emmaW = new Person("Emma Woodhouse", listOfQuestions.get(2));
 		
 		Locale hartfield = new Locale("Hartfield");
 		hartfield.addPerson(mrWoodhouse);
 		hartfield.addPerson(mrsElton);
+		hartfield.addPerson(emmaW);
 		return hartfield;
 	}
 	
 	public static void runCity(Locale l){
-		for (int i=0; i < 2; i++){
+		for (int i=0; i < 3; i++){
 			System.out.println("Hello, my name is " + l.getPeople().get(i).getName() + ".\n" + l.getPeople().get(i).getTriviaQuestion().printQuestion());
 			boolean b = checkAnswer(l.getPeople().get(i).getTriviaQuestion());
 			interpretAnswer(b);
@@ -89,6 +102,7 @@ public class Austenia{
 		String selection = readIn.nextLine();
 		if (selection == "1"){
 			Locale hartfield = setUp();
+			System.out.println("Thanks for choosing Hartfield.");
 			runCity(hartfield);
 		}
 		Locale hartfield = setUp();
