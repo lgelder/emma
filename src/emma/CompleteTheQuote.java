@@ -1,18 +1,21 @@
 package emma;
 
+import java.util.List;
 
-public class CompleteTheQuote extends Activity{
+public class CompleteTheQuote extends Activity implements ActivityInterface{
+	private String title;
 	private String sentence;
 	private String answer;
-	private String[] choices;
+	private List<Option> choices;
 	
-	private CompleteTheQuote(String sentence, String answer, String[] choices){
+	public CompleteTheQuote(String title, String sentence, String answer, List<Option> choices){
+		this.setTitle(title);
 		this.setSentence(sentence);
 		this.setAnswer(answer);
 		this.setChoices(choices);
 	}
 
-	public String getSentence() {
+	public String getPrintQuestion() {
 		return sentence;
 	}
 
@@ -28,11 +31,18 @@ public class CompleteTheQuote extends Activity{
 		this.answer = answer;
 	}
 
-	public String[] getChoices() {
+	public List<Option> getChoices() {
 		return choices;
 	}
 
-	public void setChoices(String[] choices) {
+	public void setChoices(List<Option> choices) {
 		this.choices = choices;
+	}
+	public Boolean checkAnswer(String answer){
+		if (answer == this.answer){
+			return true;
+		}
+		return false;
+		
 	}
 }

@@ -5,11 +5,11 @@ import java.util.List;
 
 //a house or estate
 
-public class Locale {
+public class Estate {
 	private String name;
 	private List<Person> people;
 	
-	public Locale(String name){
+	public Estate(String name){
 		this.name = name;
 		people = new ArrayList<Person>();
 	}

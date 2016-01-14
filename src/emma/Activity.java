@@ -1,15 +1,15 @@
 package emma;
 
-public abstract class Activity {
-	private String title;
-	private String description;
-	private Boolean completed;
+public abstract class Activity implements ActivityInterface{
+	protected String title;
+	protected String instructions;
+	protected Boolean completed;
 	
-	public String getDescription() {
-		return description;
+	public String getInstructions() {
+		return instructions;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescription(String instructions) {
+		this.instructions = instructions;
 	}
 	public Boolean getCompleted() {
 		return completed;

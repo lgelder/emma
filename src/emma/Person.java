@@ -1,15 +1,17 @@
 package emma;
 
+import java.util.*;
+
 //a non-playable character
 
-public class Person{
+public class Person implements PersonInterface{
 	
 	private String name;
-	private TriviaQuestion question;
+	private List<Activity> activities;
 	
-	public Person(String name, TriviaQuestion question){
+	public Person(String name){
 		this.name = name;
-		this.question = question;
+		this.activities = new ArrayList<Activity>();
 	}
 	
 	public String getName() {
@@ -18,11 +20,11 @@ public class Person{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public TriviaQuestion getTriviaQuestion() {
-		return question;
+	public Activity getActivity(int i) {
+		return activities.get(i);
 	}
-	public void setTriviaQuestion(TriviaQuestion question) {
-		this.question = question;
+	public void addActivity(Activity activity) {
+		this.activities.add(activity);
 	}
 	
 	

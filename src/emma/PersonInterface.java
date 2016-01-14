@@ -2,7 +2,6 @@ package emma;
 
 public interface PersonInterface {
 	public String getName();
-	public void setName(String name); 
-	public Activity getActiviy();
-	public void setActivity(Activity activity);
+	public Activity getActivity(int i);
+	public void addActivity(Activity activity);
 }
