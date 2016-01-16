@@ -1,8 +1,7 @@
-TriviaQuestions
+Trivia Question
 Mr. Woodhouse
 What is the name of my doctor?
 Mr. Perry
-3
 Mr. Perry
 Mr. Elton
 Mr. Knightley
@@ -10,7 +9,6 @@ Mr. Knightley
 Mrs. Elton
 What is my first name?
 Augusta
-3
 Catherine
 Augusta
 Elizabeth
@@ -18,7 +16,6 @@ Elizabeth
 Mrs. Weston
 Did I have a son or a daughter?
 Daughter
-3
 Son
 Daughter
 Neither

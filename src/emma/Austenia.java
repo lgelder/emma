@@ -20,29 +20,44 @@ public class Austenia{
 		cl = createCities(el, cityFile);
 		
 	}
-	
+	public static boolean isWhitespace(String str) {
+	    if (str == null) {
+	        return false;
+	    }
+	    int sz = str.length();
+	    for (int i = 0; i < sz; i++) {
+	        if ((Character.isWhitespace(str.charAt(i)) == false)) {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
 	public static List<Activity> createActivities(String tqFile, String ctqFile, String usFile){
 		Path TQFile = new File(tqFile).toPath();
 		Path CTQFile = new File(ctqFile).toPath();
 		Path USFile = new File(usFile).toPath();
 		List<Activity> listOfActivities = new ArrayList<Activity>();
 		try {
-			Charset charset = Charset.forName("US-ASCII");
+//			Charset charset = Charset.forName("US-ASCII");
+			FileReader fileReader = new FileReader(tqFile);
+	        // wrap FileReader in BufferedReader.
+	        BufferedReader bufferedReader = new BufferedReader(fileReader);
 			// Read TriviaQuestions
-            BufferedReader bufferedReader = Files.newBufferedReader(TQFile, charset);
-            String line = null;
-            while((line = bufferedReader.readLine()) != null) {
-            	while((line = bufferedReader.readLine()) != "\n"){
+//            BufferedReader bufferedReader = Files.newBufferedReader(TQFile, charset);
+            String line = bufferedReader.readLine();
+            while(line != null) {
+            	line = bufferedReader.readLine();
+            	while(line != "\n"){
             		String title = line;
             		String question = bufferedReader.readLine();
             		String answer = bufferedReader.readLine();
-            		String line2;
             		List<String> choices = new ArrayList<String>();
-            		String choice;
-            		while((line2 = bufferedReader.readLine()) != null){
-                		choice = bufferedReader.readLine();
+            		String choice = bufferedReader.readLine();
+            		while(choice != "\n"){
                 		choices.add(choice);
+                		choice = bufferedReader.readLine();
             		}
+            		line = choice;
             		List<Option> lo = createOptions(choices);
             		Activity a = new TriviaQuestion(title, question, answer, lo);
             		listOfActivities.add(a);
@@ -51,37 +66,47 @@ public class Austenia{
             bufferedReader.close();   
             
             // Read CompleteTheQuotes
-            BufferedReader bufferedReader2 = Files.newBufferedReader(CTQFile, charset);
-            String line3 = null;
-            while((line3 = bufferedReader2.readLine()) != null) {
-            	while((line3 = bufferedReader2.readLine()) != "\n"){
+//            BufferedReader bufferedReader2 = Files.newBufferedReader(CTQFile, charset);
+			FileReader fileReader2 = new FileReader(ctqFile);
+	        // wrap FileReader in BufferedReader.
+	        BufferedReader bufferedReader2 = new BufferedReader(fileReader2);
+            String line3 = bufferedReader2.readLine();
+            while(line3 != null) {
+                line3 = bufferedReader2.readLine();
+            	while(line3 != "\n"){
             		String title = line3;
             		String question = bufferedReader2.readLine();
             		String answer = bufferedReader2.readLine();
-            		String line4;
             		List<String> choices = new ArrayList<String>();
-            		String choice;
-            		while((line4 = bufferedReader2.readLine()) != null){
-                		choice = bufferedReader2.readLine();
+            		String choice = bufferedReader2.readLine();
+            		while(choice != "\n"){
                 		choices.add(choice);
+                		choice = bufferedReader2.readLine();
             		}
+            		line3 = choice;
             		List<Option> lo = createOptions(choices);
             		Activity a = new CompleteTheQuote(title, question, answer, lo);
             		listOfActivities.add(a);
             	}
             }
             bufferedReader2.close(); 
-            
+
             // Read Unscrambles
-            BufferedReader bufferedReader3 = Files.newBufferedReader(USFile, charset);
+//            BufferedReader bufferedReader3 = Files.newBufferedReader(USFile, charset);
+			FileReader fileReader3 = new FileReader(usFile);
+	        // wrap FileReader in BufferedReader.
+	        BufferedReader bufferedReader3 = new BufferedReader(fileReader3);
             String line5 = null;
-            while((line5 = bufferedReader3.readLine()) != null) {
+            line5 = bufferedReader3.readLine();
+            while(line5 != null) {
+            	line5 = bufferedReader3.readLine();
             	while((line5 != "\n")){
             		String title = line5;
             		String phrase = bufferedReader3.readLine();
             		String scrambled = bufferedReader3.readLine();
             		Activity a = new Unscramble(title, phrase, scrambled);
             		listOfActivities.add(a);
+            		line5 = bufferedReader3.readLine();
             	}
             }   
 
@@ -215,113 +240,45 @@ public class Austenia{
 		}
 		return questionchoices;
 	}
-	
-	public static List<Activity> createTQs(){
-		List<Activity> listOfQuestions = new ArrayList<Activity>();
-		
-		List<String> listOfOptions0 = new ArrayList<String>();
-		listOfOptions0.add("Mr. Perry");
-		listOfOptions0.add("Mr. Elton");
-		listOfOptions0.add("Mr. Knightley");
 
-		List<Option> listOfOptions1 = createOptions(listOfOptions0);
-		Activity question1 = new TriviaQuestion("Mr. Woodhouse's Question", 
-			 "What is the name of my doctor?", 
-				"Mr. Perry", listOfOptions1);
-		listOfQuestions.add(question1);
-
-		List<String> listOfOptions = new ArrayList<String>();
-		listOfOptions.add("Elizabeth");
-		listOfOptions.add("Augusta");
-		listOfOptions.add("Jane");
-		listOfOptions.add("Georgiana");
-		
-		List<Option> listOfOptions2 = createOptions(listOfOptions);
-		Activity question2 = new TriviaQuestion("Mrs. Elton Question", 
-				"What is my first name?", 
-				"Augusta", listOfOptions2);
-		listOfQuestions.add(question2);		
-		
-		List<String> listOfOptions3 = new ArrayList<String>();
-		listOfOptions3.add("Frank Churchill");
-		listOfOptions3.add("Mr. Elton");
-		listOfOptions3.add("Mr. Knightley");
-
-		List<Option> listOfOptions4 = createOptions(listOfOptions3);
-		Activity question3 = new TriviaQuestion("Emma Woodhouse's Question", 
-			 "Which man did I mistakenly think Harriet was in love with?", 
-				"Frank Churchill", listOfOptions4);
-		listOfQuestions.add(question3);
-		
-		return listOfQuestions;
-	}
-	
-	public static Estate setUp(){
-		List<Activity> listOfQuestions = Austenia.createTQs();
-		
-		Person mrWoodhouse = new Person("Mr. Woodhouse");
-		mrWoodhouse.addActivity(listOfQuestions.get(0));
-		
-		Person mrsElton = new Person("Mrs. Elton");
-		mrsElton.addActivity(listOfQuestions.get(1));
-		Person emmaW = new Person("Emma Woodhouse");
-		emmaW.addActivity(listOfQuestions.get(2));
-		Estate hartfield = new Estate("Hartfield");
-		hartfield.addPerson(mrWoodhouse);
-//		hartfield.addPerson(mrsElton);
-		hartfield.addPerson(emmaW);
-		return hartfield;
-	}
-	
-	public static void runEstate(Estate l){
-		for (int i=0; i < 3; i++){
-			System.out.println("Hello, my name is " + l.getPeople().get(i).getName() 
-					+ ".\n" + l.getPeople().get(i).getActivity(0).getPrintQuestion());
-			Scanner readIn = new Scanner(System.in);
-		    String userChoice = readIn.nextLine();
-//		    int userInt = Integer.parseInt(userChoice);
-		    System.out.println("You chose " + userChoice + ".");
-			boolean b = l.getPeople().get(i).getActivity(0).checkAnswer(userChoice);
-			interpretAnswer(b);
+	public void run(){
+		Scanner read = new Scanner(System.in);
+		String selection = read.nextLine();
+		while (selection != "exit"){
+			System.out.println("Please select a city:");
+			for (int i = 0; i < cl.size(); i++){
+				System.out.println(cl.get(i).getName());
+			}
+			selection = read.nextLine();
+			System.out.println(selection);
 		}
+		
+		
+		
+		
+		read.close();
 	}
 	
 	public static void main(String[] a){
-		Austenia austen = new Austenia("Cities.txt", "Estates.txt", "People.txt", "C:\\Users\\Lia Gelder\\Documents\\GitHub\\emma\\src\\emma\\TriviaQuestions.txt", "CompleteTheQuote.txt", "Unscramble.txt");
-		String welcome = "You have been transported through time to 18th century England, specifically the town of Highbury. "
-				+ "\nIf you wish to return to your original time-period, type exit at any point, otherwise, select an estate number to get started: \n1. Hartfield";
-		String thanksForPlaying = "Thank you for visiting Austenia. We hope you come back soon.";
+		String welcome = "You have been transported through time to 18th century England." 
+		+ "\nIf you wish to return to your original time-period, type exit at any point.";
 		System.out.println(welcome);
-		Scanner read = new Scanner(System.in);
-		String selection = read.nextLine();
-//		while (true){
-//			selection = read.nextLine();
-//			System.out.println(selection);
-//			if (selection.toLowerCase() == "exit"){
-//				break;
-//			}
-//			if (selection == "1" || selection.toLowerCase() == "hartfield"){
-//				Locale hartfield = setUp();
-//				System.out.println("Thanks for choosing Hartfield.");
-//				runEstate(hartfield);
-//			}
-//		}
-//		
-		Estate hartfield = setUp();
-		runEstate(hartfield);
-		read.close();
+
+		Austenia austen = new Austenia(
+				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Cities.txt", 
+				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Estates.txt", 
+				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\People.txt", 
+				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\TriviaQuestions.txt", 
+				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\CompleteTheQuote.txt", 
+				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Unscramble.txt");
+		austen.run();
+		
+
+		String thanksForPlaying = "Thank you for visiting Austenia. We hope you come back soon.";
 		System.out.println(thanksForPlaying);
 		
 	}
-//	public static boolean checkAnswer(Activity a){
-//		Scanner readIn = new Scanner(System.in);
-//	    String userChoice = readIn.nextLine();
-////	    int userInt = Integer.parseInt(userChoice);
-//	    System.out.println("You chose " + userChoice + ".");
-//	    
-//	    return a.checkAnswer(userChoice);
-//	    
-//	}
+
 	public static void interpretAnswer(boolean b){
 		if (b == true){
 			System.out.println("Congratulations! You are correct!\n");
@@ -330,4 +287,99 @@ public class Austenia{
 		}
 		
 	}
+//	public static boolean checkAnswer(Activity a){
+//	Scanner readIn = new Scanner(System.in);
+//    String userChoice = readIn.nextLine();
+////    int userInt = Integer.parseInt(userChoice);
+//    System.out.println("You chose " + userChoice + ".");
+//    
+//    return a.checkAnswer(userChoice);
+//    
+//}
+//	
+//	public static Estate setUp(){
+//		List<Activity> listOfQuestions = Austenia.createTQs();
+//		
+//		Person mrWoodhouse = new Person("Mr. Woodhouse");
+//		mrWoodhouse.addActivity(listOfQuestions.get(0));
+//		
+//		Person mrsElton = new Person("Mrs. Elton");
+//		mrsElton.addActivity(listOfQuestions.get(1));
+//		Person emmaW = new Person("Emma Woodhouse");
+//		emmaW.addActivity(listOfQuestions.get(2));
+//		Estate hartfield = new Estate("Hartfield");
+//		hartfield.addPerson(mrWoodhouse);
+////		hartfield.addPerson(mrsElton);
+//		hartfield.addPerson(emmaW);
+//		return hartfield;
+//	}
+//	
+//	public static void runEstate(Estate l){
+//		for (int i=0; i < 3; i++){
+//			System.out.println("Hello, my name is " + l.getPeople().get(i).getName() 
+//					+ ".\n" + l.getPeople().get(i).getActivity(0).getPrintQuestion());
+//			Scanner readIn = new Scanner(System.in);
+//		    String userChoice = readIn.nextLine();
+////		    int userInt = Integer.parseInt(userChoice);
+//		    System.out.println("You chose " + userChoice + ".");
+//			boolean b = l.getPeople().get(i).getActivity(0).checkAnswer(userChoice);
+//			interpretAnswer(b);
+//			readIn.close();
+//		}
+//	}
+//	
+//	
+//	while (true){
+//	selection = read.nextLine();
+//	System.out.println(selection);
+//	if (selection.toLowerCase() == "exit"){
+//		break;
+//	}
+//	if (selection == "1" || selection.toLowerCase() == "hartfield"){
+//		Locale hartfield = setUp();
+//		System.out.println("Thanks for choosing Hartfield.");
+//		runEstate(hartfield);
+//	}
+//}
+//
+//	public static List<Activity> createTQs(){
+//		List<Activity> listOfQuestions = new ArrayList<Activity>();
+//		
+//		List<String> listOfOptions0 = new ArrayList<String>();
+//		listOfOptions0.add("Mr. Perry");
+//		listOfOptions0.add("Mr. Elton");
+//		listOfOptions0.add("Mr. Knightley");
+//
+//		List<Option> listOfOptions1 = createOptions(listOfOptions0);
+//		Activity question1 = new TriviaQuestion("Mr. Woodhouse's Question", 
+//			 "What is the name of my doctor?", 
+//				"Mr. Perry", listOfOptions1);
+//		listOfQuestions.add(question1);
+//
+//		List<String> listOfOptions = new ArrayList<String>();
+//		listOfOptions.add("Elizabeth");
+//		listOfOptions.add("Augusta");
+//		listOfOptions.add("Jane");
+//		listOfOptions.add("Georgiana");
+//		
+//		List<Option> listOfOptions2 = createOptions(listOfOptions);
+//		Activity question2 = new TriviaQuestion("Mrs. Elton Question", 
+//				"What is my first name?", 
+//				"Augusta", listOfOptions2);
+//		listOfQuestions.add(question2);		
+//		
+//		List<String> listOfOptions3 = new ArrayList<String>();
+//		listOfOptions3.add("Frank Churchill");
+//		listOfOptions3.add("Mr. Elton");
+//		listOfOptions3.add("Mr. Knightley");
+//
+//		List<Option> listOfOptions4 = createOptions(listOfOptions3);
+//		Activity question3 = new TriviaQuestion("Emma Woodhouse's Question", 
+//			 "Which man did I mistakenly think Harriet was in love with?", 
+//				"Frank Churchill", listOfOptions4);
+//		listOfQuestions.add(question3);
+//		
+//		return listOfQuestions;
+//	}
+
 }

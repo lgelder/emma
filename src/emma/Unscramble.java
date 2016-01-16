@@ -7,6 +7,7 @@ public class Unscramble extends Activity implements ActivityInterface{
 	public Unscramble(String title, String phrase, String scrambled){
 		this.title = title;
 		this.instructions =  "Figure out to what phrase these letters can be rearranged:";
+		this.completed = false;
 		this.phrase = phrase;
 		this.scrambled = scrambled;
 	}
@@ -16,8 +17,10 @@ public class Unscramble extends Activity implements ActivityInterface{
 	public String getPrintQuestion(){
 		return this.scrambled;
 	}
-	public Boolean checkAnswer(String answer){
-		if (answer == this.phrase){
+	public Boolean checkAnswer(String a){
+		a = a.toLowerCase();
+		if (a == this.phrase){
+			this.completed = true;
 			return true;
 		}
 		return false;

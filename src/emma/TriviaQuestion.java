@@ -51,6 +51,7 @@ public class TriviaQuestion extends Activity implements ActivityInterface{
 	public Boolean checkAnswer(String a){
 		a = a.toLowerCase();
 		if (a == getAnswer()){
+			this.completed = true;
 			return true;
 		}
 		return false;

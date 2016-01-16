@@ -10,6 +10,7 @@ public class CompleteTheQuote extends Activity implements ActivityInterface{
 	
 	public CompleteTheQuote(String title, String sentence, String answer, List<Option> choices){
 		this.setTitle(title);
+		this.completed = false;
 		this.setSentence(sentence);
 		this.setAnswer(answer);
 		this.setChoices(choices);
@@ -38,8 +39,10 @@ public class CompleteTheQuote extends Activity implements ActivityInterface{
 	public void setChoices(List<Option> choices) {
 		this.choices = choices;
 	}
-	public Boolean checkAnswer(String answer){
-		if (answer == this.answer){
+	public Boolean checkAnswer(String a){
+		a = a.toLowerCase();
+		if (a == this.answer){
+			this.completed = true;
 			return true;
 		}
 		return false;
