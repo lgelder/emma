@@ -8,11 +8,13 @@ public class Person implements PersonInterface{
 	
 	private String name;
 	private String estate;
+	private Boolean completed;
 	private List<Activity> activities;
 	
 	public Person(String name, String estate){
 		this.name = name;
 		this.estate = estate;
+		this.completed = false;
 		this.activities = new ArrayList<Activity>();
 	}
 	
@@ -36,7 +38,17 @@ public class Person implements PersonInterface{
 	public void setEstate(String estate) {
 		this.estate = estate;
 	}
+
+	public Boolean getCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(Boolean completed) {
+		this.completed = completed;
+	}
 	
-	
+	public List<Activity> getActivities(){
+		return this.activities;
+	}
 	
 }

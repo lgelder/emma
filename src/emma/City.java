@@ -5,11 +5,13 @@ import java.util.List;
 
 public class City {
 	private String name;
+	private Boolean completed;
 	private List<Estate> estates;
 	
 	public City(String name){
 		this.name = name;
-		estates = new ArrayList<Estate>();
+		this.completed = false;
+		this.estates = new ArrayList<Estate>();
 	}
 	
 	public void addEstate(Estate e){
@@ -26,6 +28,14 @@ public class City {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Boolean getCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(Boolean completed) {
+		this.completed = completed;
 	}
 
 }

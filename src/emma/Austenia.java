@@ -26,7 +26,7 @@ public class Austenia{
 		System.out.print("Creating Cities...");
 		cl = createCities(el, cityFile);
 		System.out.println("Created Cities");
-
+		System.out.println("Setup complete.");
 		
 	}
 	public static boolean isWhitespace(String str) {
@@ -67,7 +67,7 @@ public class Austenia{
             		listOfActivities.add(a);
             	}
             }   
-    		System.out.print("added TriviaQuestions...");
+    		System.out.print("added trivia questions...");
             bufferedReader.close();   
             
             // Read CompleteTheQuotes
@@ -94,7 +94,7 @@ public class Austenia{
             		listOfActivities.add(a);
             	}
             }
-    		System.out.print("added CompleteTheQuotes...");
+    		System.out.print("added complete the quotes...");
             bufferedReader2.close(); 
 
             // Read Unscrambles
@@ -115,7 +115,7 @@ public class Austenia{
             		line5 = bufferedReader3.readLine();
             	}
             }   
-    		System.out.print("added Unscrambles...");
+    		System.out.print("added unscrambles...");
             bufferedReader3.close(); 
         }
         catch(FileNotFoundException ex) {
@@ -153,7 +153,7 @@ public class Austenia{
 	        		line5 = bufferedReader.readLine();
 	        	}
 	        }   
-	        System.out.print("created People...");
+	        System.out.print("created people...");
 	        bufferedReader.close(); }
 
         catch(FileNotFoundException ex) {
@@ -198,7 +198,7 @@ public class Austenia{
 	        		line5 = bufferedReader.readLine();
 	        	}
 	        }   
-	
+	        System.out.print("created estates...");
 	        bufferedReader.close(); }
 
         catch(FileNotFoundException ex) {
@@ -215,11 +215,14 @@ public class Austenia{
         }
 		for (int p = 0; p < plist.size(); p++){
 			for (int e = 0; e < listOfEstates.size(); e++){
-				if (plist.get(p).getEstate() == listOfEstates.get(e).getName()){
+				if (plist.get(p).getEstate().equals(listOfEstates.get(e).getName())){
 					listOfEstates.get(e).addPerson(plist.get(p));
+//					System.out.println("added " + plist.get(p).getName() + " to " + listOfEstates.get(e).getName());
+
 				}
 			}
 		}
+		System.out.print("added people to estates...");
 		return listOfEstates;
 	}
 	
@@ -240,7 +243,8 @@ public class Austenia{
 	        		line5 = bufferedReader.readLine();
 	        	}
 	        }   
-	
+	        System.out.print("created cities...");
+
 	        bufferedReader.close(); }
 		
         catch(FileNotFoundException ex) {
@@ -257,11 +261,14 @@ public class Austenia{
         }
 		for (int e = 0; e < elist.size(); e++){
 			for (int c = 0; c < listOfCities.size(); c++){
-				if (elist.get(e).getName() == listOfCities.get(c).getName()){
+				if (elist.get(e).getCity().equals(listOfCities.get(c).getName())){
 					listOfCities.get(c).addEstate(elist.get(e));
+//					System.out.println("added " + elist.get(e).getName() + " to " + listOfCities.get(c).getName());
+
 				}
 			}
 		}
+		System.out.print("added estates to cities...");
 		return listOfCities;
 	}
 	
@@ -275,20 +282,71 @@ public class Austenia{
 
 	public void run(){
 		Scanner read = new Scanner(System.in);
-		String selection = read.nextLine();
-		while (selection != "exit"){
+		String selection = "";
+		while (!selection.equals("exit")){
 			System.out.println("Please select a city:");
 			for (int i = 0; i < cl.size(); i++){
-				System.out.println(cl.get(i).getName());
+				if (!cl.get(i).getCompleted()){
+					System.out.println(cl.get(i).getName());
+				}
 			}
 			selection = read.nextLine();
-			System.out.println(selection);
-		}
-		
-		
-		
-		
+			String city = selection.toLowerCase();
+			int cindex = findCity(city);
+		    while (!cl.get(cindex).getCompleted() || !selection.equals("exit")){
+				System.out.println("Please select an estate:");
+				for (int i = 0; i < cl.get(cindex).getEstates().size(); i++){
+					System.out.println(cl.get(cindex).getEstates().get(i).getName());
+				}
+				selection = read.nextLine();
+				String estate = selection.toLowerCase();
+				int eindex = findEstate(cindex, estate);
+				while (!cl.get(cindex).getEstates().get(eindex).getCompleted() || !selection.equals("exit")){
+					System.out.println("Please select a person:");
+					for (int i = 0; i < cl.get(cindex).getEstates().get(eindex).getPeople().size(); i++){
+						System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(i).getName());
+					}
+					selection = read.nextLine();
+					String person = selection.toLowerCase();
+					int pindex = findPerson(cindex, eindex, person);
+					while (!cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getCompleted() || !selection.equals("exit")){
+						for (int i = 0; i < cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities().size(); i++){
+							System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).getPrintQuestion());
+							selection = read.nextLine().toLowerCase();
+							Boolean answer = cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).checkAnswer(selection);
+							interpretAnswer(answer);
+						}
+					}
+				}
+			}
+		}		
 		read.close();
+	}
+	
+	public int findCity(String city){
+		for (int i = 0; i < cl.size(); i++){
+	        if((cl.get(i).getCompleted().equals(false)) && (cl.get(i).getName()).toLowerCase().equals(city)){  
+	        	return i;
+	        }
+		}
+		return -1;
+	}
+	public int findEstate(int cityindex, String estate){
+		for (int i = 0; i < cl.get(cityindex).getEstates().size(); i++){
+	        if((cl.get(cityindex).getEstates().get(i).getCompleted().equals(false)) && (cl.get(cityindex).getEstates().get(i).getName()).toLowerCase().equals(estate)){  
+	        	return i;
+	        }
+		}
+		return -1;
+	}
+	public int findPerson(int cityindex, int estateindex, String person){
+		for (int i = 0; i < cl.get(cityindex).getEstates().get(estateindex).getPeople().size(); i++){
+	        if((cl.get(cityindex).getEstates().get(estateindex).getPeople().get(i).getCompleted().equals(false)) 
+	        		&& (cl.get(cityindex).getEstates().get(estateindex).getPeople().get(i).getName()).toLowerCase().equals(person)){  
+	        	return i;
+	        }
+		}
+		return -1;
 	}
 	
 	public static void main(String[] a){
@@ -303,7 +361,7 @@ public class Austenia{
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\TriviaQuestions.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\CompleteTheQuote.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Unscramble.txt");
-//		austen.run();
+		austen.run();
 		
 
 		String thanksForPlaying = "Thank you for visiting Austenia. We hope you come back soon.";
