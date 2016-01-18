@@ -2,48 +2,23 @@ package emma;
 
 import java.util.List;
 
-public class TriviaQuestion {
-	private String title;
-	private String instructions = "Enter a number (1-3): \n";
-	private Boolean completed;
+public class TriviaQuestion extends Activity implements ActivityInterface{
 	private String question;
 	private String answer;
 	private List<Option> choices;
 	
-	public TriviaQuestion(String title, String question, String answer, List<Option> choices){
-		this.title = title;
+	public TriviaQuestion(String person, String question, String answer, List<Option> choices){
+		this.person = person;
 		this.completed = false;
+		this.instructions = "Enter your answer in word format: \n";
 		this.question = question;
 		this.answer = answer;
 		this.choices = choices;
 	}
-	
-	public String printQuestion(){
-		String printOut = "";
-		printOut = getQuestion() + "\n" + getInstructions() + getStringChoices();
-		
-		
-		return printOut;
+	public String getPrintQuestion(){
+		return getQuestion() + "\n" + getInstructions() + getStringChoices();
 	}
-	
-	public String getInstructions() {
-		return instructions;
-	}
-	public void setDescription(String instructions) {
-		this.instructions = instructions;
-	}
-	public Boolean getCompleted() {
-		return completed;
-	}
-	public void setCompleted(Boolean completed) {
-		this.completed = completed;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
+
 	public String getQuestion() {
 		return question;
 	}
@@ -68,5 +43,13 @@ public class TriviaQuestion {
 	}
 	public void setChoices(List<Option> choices) {
 		this.choices = choices;
+	}
+	public Boolean checkAnswer(String a){
+		a = a.toLowerCase();
+		if (a == getAnswer()){
+			this.completed = true;
+			return true;
+		}
+		return false;
 	}
 }
