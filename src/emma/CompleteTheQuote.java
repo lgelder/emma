@@ -10,13 +10,14 @@ public class CompleteTheQuote extends Activity implements ActivityInterface{
 	public CompleteTheQuote(String person, String sentence, String answer, List<Option> choices){
 		this.person = person;
 		this.completed = false;
+		this.instructions = "Enter the correct word/phrase to complete the quote:";
 		this.sentence = sentence;
 		this.answer = answer;
 		this.choices = choices;
 	}
 
 	public String getPrintQuestion() {
-		return sentence;
+		return this.instructions + "\n" + this.sentence;
 	}
 
 	public void setSentence(String sentence) {

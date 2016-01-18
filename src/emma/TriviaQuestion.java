@@ -16,11 +16,7 @@ public class TriviaQuestion extends Activity implements ActivityInterface{
 		this.choices = choices;
 	}
 	public String getPrintQuestion(){
-		String printOut = "";
-		printOut = getQuestion() + "\n" + getInstructions() + getStringChoices();
-		
-		
-		return printOut;
+		return getQuestion() + "\n" + getInstructions() + getStringChoices();
 	}
 
 	public String getQuestion() {

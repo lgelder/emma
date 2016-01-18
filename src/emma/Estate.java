@@ -7,10 +7,12 @@ import java.util.List;
 
 public class Estate {
 	private String name;
+	private String city;
 	private List<Person> people;
 	
-	public Estate(String name){
+	public Estate(String name, String city){
 		this.name = name;
+		this.setCity(city);
 		people = new ArrayList<Person>();
 	}
 	
@@ -28,6 +30,14 @@ public class Estate {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 }

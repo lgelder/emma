@@ -15,7 +15,7 @@ public class Unscramble extends Activity implements ActivityInterface{
 		return this.phrase;
 	}
 	public String getPrintQuestion(){
-		return this.scrambled;
+		return this.instructions + "\n" + this.scrambled;
 	}
 	public Boolean checkAnswer(String a){
 		a = a.toLowerCase();

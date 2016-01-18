@@ -14,16 +14,16 @@ public class Austenia{
 	// Constructor. Add another file later
 	public Austenia(String cityFile, String estateFile, String personFile, String activityFile1, 
 			String activityFile2, String activityFile3){
-		System.out.println("Creating Activities...");
+		System.out.print("Creating Activities...");
 		List<Activity> al = createActivities(activityFile1, activityFile2, activityFile3);
 		System.out.println("Created Activities");
-		System.out.println("Creating People...");
+		System.out.print("Creating People...");
 		List<Person> pl = createPeople(al, personFile);
 		System.out.println("Created People");
-		System.out.println("Creating Estates...");
+		System.out.print("Creating Estates...");
 		List<Estate> el = createEstates(pl, estateFile);
 		System.out.println("Created Estates");
-		System.out.println("Creating Cities...");
+		System.out.print("Creating Cities...");
 		cl = createCities(el, cityFile);
 		System.out.println("Created Cities");
 
@@ -67,6 +67,7 @@ public class Austenia{
             		listOfActivities.add(a);
             	}
             }   
+    		System.out.print("added TriviaQuestions...");
             bufferedReader.close();   
             
             // Read CompleteTheQuotes
@@ -93,6 +94,7 @@ public class Austenia{
             		listOfActivities.add(a);
             	}
             }
+    		System.out.print("added CompleteTheQuotes...");
             bufferedReader2.close(); 
 
             // Read Unscrambles
@@ -113,7 +115,7 @@ public class Austenia{
             		line5 = bufferedReader3.readLine();
             	}
             }   
-
+    		System.out.print("added Unscrambles...");
             bufferedReader3.close(); 
         }
         catch(FileNotFoundException ex) {
@@ -126,91 +128,94 @@ public class Austenia{
             // Or we could just do this: 
 //             ex.printStackTrace();
         }
+		// Test that activities were created correctly
+//		for (int i = 0; i < listOfActivities.size(); i++){
+//			System.out.println(listOfActivities.get(i).getPrintQuestion());
+//		}
 		return listOfActivities;
 	}
 	
 	public static List<Person> createPeople(List<Activity> actList, String file){
 		List<Person> listOfPeople = new ArrayList<Person>();
-		FileReader fileReader3 = new FileReader(usFile);
-        // wrap FileReader in BufferedReader.
-        BufferedReader bufferedReader3 = new BufferedReader(fileReader3);
-        String line5 = null;
-        line5 = bufferedReader3.readLine();
-        while(line5 != null) {
-        	line5 = bufferedReader3.readLine();
-        	while(!isWhitespace(line5) && line5 != null){
-        		String name = line5;
-        		String estate = bufferedReader3.readLine();
-        		Person p = new Person(name, estate);
-        		listOfPeople.add(a);
-        		line5 = bufferedReader3.readLine();
-        	}
-        }   
-
-        bufferedReader3.close(); 
-		Path File = new File(file).toPath();
 		try {
-			Charset charset = Charset.forName("US-ASCII");
-            BufferedReader bufferedReader = Files.newBufferedReader(File, charset);
-            String line = null;
-            while((line = bufferedReader.readLine()) != null) {
-            	Person p = new Person(line);
-            	listOfPeople.add(p);
-            }   
-            // Always close files.
-            bufferedReader.close();         
-        }
+			FileReader fileReader = new FileReader(file);
+	        // wrap FileReader in BufferedReader.
+	        BufferedReader bufferedReader = new BufferedReader(fileReader);
+	        String line5 = null;
+	        line5 = bufferedReader.readLine();
+	        while(line5 != null) {
+	        	line5 = bufferedReader.readLine();
+	        	while(!isWhitespace(line5) && line5 != null){
+	        		String name = line5;
+	        		String estate = bufferedReader.readLine();
+	        		Person p = new Person(name, estate);
+	        		listOfPeople.add(p);
+	        		line5 = bufferedReader.readLine();
+	        	}
+	        }   
+	        System.out.print("created People...");
+	        bufferedReader.close(); }
+
         catch(FileNotFoundException ex) {
             System.out.println(
                 "Unable to open file '" + 
-                File + "'");                
+                file + "'");                
         }
         catch(IOException ex) {
             System.out.println(
                 "Error reading file '" 
-                + File + "'");                  
+                + file + "'");                  
             // Or we could just do this: 
 //             ex.printStackTrace();
         }
 		for (int a = 0; a < actList.size(); a++){
 			for (int p = 0; p < listOfPeople.size(); p++){
-				if (actList.get(a).getTitle() == listOfPeople.get(p).getName()){
+				if (actList.get(a).getPerson() == listOfPeople.get(p).getName()){
 					listOfPeople.get(p).addActivity(actList.get(a));
+					System.out.println("added activity to person...");
 				}
 			}
 		}
+		System.out.print("added activities to people...");
 		return listOfPeople;
 	}	
 	
 	public static List<Estate> createEstates(List<Person> plist, String file){
 		List<Estate> listOfEstates = new ArrayList<Estate>();
-		Path File = new File(file).toPath();
 		try {
-			Charset charset = Charset.forName("US-ASCII");
-            BufferedReader bufferedReader = Files.newBufferedReader(File, charset);
-            String line = null;
-            while((line = bufferedReader.readLine()) != null) {
-            	Estate e = new Estate(line);
-            	listOfEstates.add(e);
-            }   
-            // Always close files.
-            bufferedReader.close();         
-        }
+			FileReader fileReader = new FileReader(file);
+	        // wrap FileReader in BufferedReader.
+	        BufferedReader bufferedReader = new BufferedReader(fileReader);
+	        String line5 = null;
+	        line5 = bufferedReader.readLine();
+	        while(line5 != null) {
+	        	line5 = bufferedReader.readLine();
+	        	while(!isWhitespace(line5) && line5 != null){
+	        		String name = line5;
+	        		String city = bufferedReader.readLine();
+	        		Estate e = new Estate(name, city);
+	        		listOfEstates.add(e);
+	        		line5 = bufferedReader.readLine();
+	        	}
+	        }   
+	
+	        bufferedReader.close(); }
+
         catch(FileNotFoundException ex) {
             System.out.println(
                 "Unable to open file '" + 
-                File + "'");                
+                file + "'");                
         }
         catch(IOException ex) {
             System.out.println(
                 "Error reading file '" 
-                + File + "'");                  
+                + file + "'");                  
             // Or we could just do this: 
 //             ex.printStackTrace();
         }
 		for (int p = 0; p < plist.size(); p++){
 			for (int e = 0; e < listOfEstates.size(); e++){
-				if (plist.get(p).getName() == listOfEstates.get(e).getName()){
+				if (plist.get(p).getEstate() == listOfEstates.get(e).getName()){
 					listOfEstates.get(e).addPerson(plist.get(p));
 				}
 			}
@@ -220,27 +225,33 @@ public class Austenia{
 	
 	public static List<City> createCities(List<Estate> elist, String file){
 		List<City> listOfCities = new ArrayList<City>();
-		Path File = new File(file).toPath();
 		try {
-			Charset charset = Charset.forName("US-ASCII");
-            BufferedReader bufferedReader = Files.newBufferedReader(File, charset);
-            String line = null;
-            while((line = bufferedReader.readLine()) != null) {
-            	City c = new City(line);
-            	listOfCities.add(c);
-            }   
-            // Always close files.
-            bufferedReader.close();         
-        }
+			FileReader fileReader = new FileReader(file);
+	        // wrap FileReader in BufferedReader.
+	        BufferedReader bufferedReader = new BufferedReader(fileReader);
+	        String line5 = null;
+	        line5 = bufferedReader.readLine();
+	        while(line5 != null) {
+	        	line5 = bufferedReader.readLine();
+	        	while(!isWhitespace(line5) && line5 != null){
+	        		String name = line5;
+	        		City c = new City(name);
+	        		listOfCities.add(c);
+	        		line5 = bufferedReader.readLine();
+	        	}
+	        }   
+	
+	        bufferedReader.close(); }
+		
         catch(FileNotFoundException ex) {
             System.out.println(
                 "Unable to open file '" + 
-                File + "'");                
+                file + "'");                
         }
         catch(IOException ex) {
             System.out.println(
                 "Error reading file '" 
-                + File + "'");                  
+                + file + "'");                  
             // Or we could just do this: 
 //             ex.printStackTrace();
         }
@@ -292,7 +303,7 @@ public class Austenia{
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\TriviaQuestions.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\CompleteTheQuote.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Unscramble.txt");
-		austen.run();
+//		austen.run();
 		
 
 		String thanksForPlaying = "Thank you for visiting Austenia. We hope you come back soon.";
