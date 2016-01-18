@@ -12,7 +12,7 @@ public class Person implements PersonInterface{
 	
 	public Person(String name, String estate){
 		this.name = name;
-		this.setEstate(estate);
+		this.estate = estate;
 		this.activities = new ArrayList<Activity>();
 	}
 	
