@@ -1,17 +1,15 @@
 package emma;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Austenia{
 	private List<City> cl;
 	
-	// Constructor. Add another file later
+	// Constructor. Add another activity type and file later
 	public Austenia(String cityFile, String estateFile, String personFile, String activityFile1, 
 			String activityFile2, String activityFile3){
 		System.out.print("Creating Activities...");
@@ -26,7 +24,7 @@ public class Austenia{
 		System.out.print("Creating Cities...");
 		cl = createCities(el, cityFile);
 		System.out.println("Created Cities");
-		System.out.println("Setup complete.");
+		System.out.println("Setup complete. \n\n");
 		
 	}
 	public static boolean isWhitespace(String str) {
@@ -179,7 +177,7 @@ public class Austenia{
 		System.out.print("added activities to people...");
 		return listOfPeople;
 	}	
-	
+
 	public static List<Estate> createEstates(List<Person> plist, String file){
 		List<Estate> listOfEstates = new ArrayList<Estate>();
 		try {
@@ -291,32 +289,64 @@ public class Austenia{
 				}
 			}
 			selection = read.nextLine();
+			if (selection.equals("exit")){
+				break;
+			}
 			String city = selection.toLowerCase();
 			int cindex = findCity(city);
-		    while (!cl.get(cindex).getCompleted() || !selection.equals("exit")){
+		    while (!cl.get(cindex).getCompleted() && !selection.equals("exit")){
 				System.out.println("Please select an estate:");
 				for (int i = 0; i < cl.get(cindex).getEstates().size(); i++){
 					System.out.println(cl.get(cindex).getEstates().get(i).getName());
 				}
 				selection = read.nextLine();
+				if (selection.equals("exit")){
+					break;
+				}
 				String estate = selection.toLowerCase();
 				int eindex = findEstate(cindex, estate);
-				while (!cl.get(cindex).getEstates().get(eindex).getCompleted() || !selection.equals("exit")){
+				while (!cl.get(cindex).getEstates().get(eindex).getCompleted() && !selection.equals("exit")){
 					System.out.println("Please select a person:");
 					for (int i = 0; i < cl.get(cindex).getEstates().get(eindex).getPeople().size(); i++){
 						System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(i).getName());
 					}
 					selection = read.nextLine();
+					if (selection.equals("exit")){
+						break;
+					}
 					String person = selection.toLowerCase();
 					int pindex = findPerson(cindex, eindex, person);
-					while (!cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getCompleted() || !selection.equals("exit")){
+					while (!cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getCompleted() && !selection.equals("exit")){
 						for (int i = 0; i < cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities().size(); i++){
 							System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).getPrintQuestion());
 							selection = read.nextLine().toLowerCase();
 							Boolean answer = cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).checkAnswer(selection);
 							interpretAnswer(answer);
 						}
+						cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).setCompleted(true);
+						System.out.println("Congratulations! You have completed all of the activities this person asked of you!");
 					}
+					int counter = 0;
+					for (Person p : cl.get(cindex).getEstates().get(eindex).getPeople()){
+						if (p.getCompleted() == true){
+							counter++;
+						}
+					}
+					if (counter == cl.get(cindex).getEstates().get(eindex).getPeople().size()){
+						cl.get(cindex).getEstates().get(eindex).setCompleted(true);
+						System.out.println("Congratulations! You have completed all of the activities at this estate!");
+					}
+				}
+				int counter = 0;
+				for (Estate e : cl.get(cindex).getEstates()){
+					if (e.getCompleted() == true){
+						counter++;
+					}
+				}
+				if (counter == cl.get(cindex).getEstates().size()){
+					cl.get(cindex).setCompleted(true);
+					System.out.println("Congratulations! You have completed all of the activities in this city!");
+
 				}
 			}
 		}		
@@ -350,10 +380,6 @@ public class Austenia{
 	}
 	
 	public static void main(String[] a){
-		String welcome = "You have been transported through time to 18th century England." 
-		+ "\nIf you wish to return to your original time-period, type exit at any point.";
-		System.out.println(welcome);
-
 		Austenia austen = new Austenia(
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Cities.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Estates.txt", 
@@ -361,9 +387,13 @@ public class Austenia{
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\TriviaQuestions.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\CompleteTheQuote.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Unscramble.txt");
+		
+		String welcome = "You have been transported through time to 18th century England." 
+		+ "\nIf you wish to return to your original time-period, type exit at any point.";
+		System.out.println(welcome);
+		
 		austen.run();
 		
-
 		String thanksForPlaying = "Thank you for visiting Austenia. We hope you come back soon.";
 		System.out.println(thanksForPlaying);
 		
