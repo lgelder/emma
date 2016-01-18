@@ -3,17 +3,16 @@ package emma;
 import java.util.List;
 
 public class CompleteTheQuote extends Activity implements ActivityInterface{
-	private String title;
 	private String sentence;
 	private String answer;
 	private List<Option> choices;
 	
-	public CompleteTheQuote(String title, String sentence, String answer, List<Option> choices){
-		this.setTitle(title);
+	public CompleteTheQuote(String person, String sentence, String answer, List<Option> choices){
+		this.person = person;
 		this.completed = false;
-		this.setSentence(sentence);
-		this.setAnswer(answer);
-		this.setChoices(choices);
+		this.sentence = sentence;
+		this.answer = answer;
+		this.choices = choices;
 	}
 
 	public String getPrintQuestion() {

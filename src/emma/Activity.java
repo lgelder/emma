@@ -1,7 +1,7 @@
 package emma;
 
 public abstract class Activity implements ActivityInterface{
-	protected String title;
+	protected String person;
 	protected String instructions;
 	protected Boolean completed;
 	
@@ -17,11 +17,11 @@ public abstract class Activity implements ActivityInterface{
 	public void setCompleted(Boolean completed) {
 		this.completed = completed;
 	}
-	public String getTitle() {
-		return title;
+	public String getPerson() {
+		return person;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setPerson(String person) {
+		this.person = person;
 	}
 	
 }

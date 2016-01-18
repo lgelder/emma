@@ -7,10 +7,12 @@ import java.util.*;
 public class Person implements PersonInterface{
 	
 	private String name;
+	private String estate;
 	private List<Activity> activities;
 	
-	public Person(String name){
+	public Person(String name, String estate){
 		this.name = name;
+		this.setEstate(estate);
 		this.activities = new ArrayList<Activity>();
 	}
 	
@@ -25,6 +27,14 @@ public class Person implements PersonInterface{
 	}
 	public void addActivity(Activity activity) {
 		this.activities.add(activity);
+	}
+
+	public String getEstate() {
+		return estate;
+	}
+
+	public void setEstate(String estate) {
+		this.estate = estate;
 	}
 	
 	

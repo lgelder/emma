@@ -14,10 +14,19 @@ public class Austenia{
 	// Constructor. Add another file later
 	public Austenia(String cityFile, String estateFile, String personFile, String activityFile1, 
 			String activityFile2, String activityFile3){
+		System.out.println("Creating Activities...");
 		List<Activity> al = createActivities(activityFile1, activityFile2, activityFile3);
+		System.out.println("Created Activities");
+		System.out.println("Creating People...");
 		List<Person> pl = createPeople(al, personFile);
+		System.out.println("Created People");
+		System.out.println("Creating Estates...");
 		List<Estate> el = createEstates(pl, estateFile);
+		System.out.println("Created Estates");
+		System.out.println("Creating Cities...");
 		cl = createCities(el, cityFile);
+		System.out.println("Created Cities");
+
 		
 	}
 	public static boolean isWhitespace(String str) {
@@ -33,27 +42,22 @@ public class Austenia{
 	    return true;
 	}
 	public static List<Activity> createActivities(String tqFile, String ctqFile, String usFile){
-		Path TQFile = new File(tqFile).toPath();
-		Path CTQFile = new File(ctqFile).toPath();
-		Path USFile = new File(usFile).toPath();
 		List<Activity> listOfActivities = new ArrayList<Activity>();
 		try {
-//			Charset charset = Charset.forName("US-ASCII");
 			FileReader fileReader = new FileReader(tqFile);
 	        // wrap FileReader in BufferedReader.
 	        BufferedReader bufferedReader = new BufferedReader(fileReader);
 			// Read TriviaQuestions
-//            BufferedReader bufferedReader = Files.newBufferedReader(TQFile, charset);
             String line = bufferedReader.readLine();
             while(line != null) {
             	line = bufferedReader.readLine();
-            	while(line != "\n"){
+            	while(!isWhitespace(line) && line != null){
             		String title = line;
             		String question = bufferedReader.readLine();
             		String answer = bufferedReader.readLine();
             		List<String> choices = new ArrayList<String>();
             		String choice = bufferedReader.readLine();
-            		while(choice != "\n"){
+            		while(!isWhitespace(choice) && choice != null){
                 		choices.add(choice);
                 		choice = bufferedReader.readLine();
             		}
@@ -73,13 +77,13 @@ public class Austenia{
             String line3 = bufferedReader2.readLine();
             while(line3 != null) {
                 line3 = bufferedReader2.readLine();
-            	while(line3 != "\n"){
+            	while(!isWhitespace(line3) && line3 != null){
             		String title = line3;
             		String question = bufferedReader2.readLine();
             		String answer = bufferedReader2.readLine();
             		List<String> choices = new ArrayList<String>();
             		String choice = bufferedReader2.readLine();
-            		while(choice != "\n"){
+            		while(!isWhitespace(choice) && choice != null){
                 		choices.add(choice);
                 		choice = bufferedReader2.readLine();
             		}
@@ -100,7 +104,7 @@ public class Austenia{
             line5 = bufferedReader3.readLine();
             while(line5 != null) {
             	line5 = bufferedReader3.readLine();
-            	while((line5 != "\n")){
+            	while(!isWhitespace(line5) && line5 != null){
             		String title = line5;
             		String phrase = bufferedReader3.readLine();
             		String scrambled = bufferedReader3.readLine();
@@ -127,6 +131,23 @@ public class Austenia{
 	
 	public static List<Person> createPeople(List<Activity> actList, String file){
 		List<Person> listOfPeople = new ArrayList<Person>();
+		FileReader fileReader3 = new FileReader(usFile);
+        // wrap FileReader in BufferedReader.
+        BufferedReader bufferedReader3 = new BufferedReader(fileReader3);
+        String line5 = null;
+        line5 = bufferedReader3.readLine();
+        while(line5 != null) {
+        	line5 = bufferedReader3.readLine();
+        	while(!isWhitespace(line5) && line5 != null){
+        		String name = line5;
+        		String estate = bufferedReader3.readLine();
+        		Person p = new Person(name, estate);
+        		listOfPeople.add(a);
+        		line5 = bufferedReader3.readLine();
+        	}
+        }   
+
+        bufferedReader3.close(); 
 		Path File = new File(file).toPath();
 		try {
 			Charset charset = Charset.forName("US-ASCII");
