@@ -170,7 +170,7 @@ public class Austenia{
 			for (int p = 0; p < listOfPeople.size(); p++){
 				if (actList.get(a).getPerson().equals(listOfPeople.get(p).getName())){
 					listOfPeople.get(p).addActivity(actList.get(a));
-//					System.out.println("added " + actList.get(a).getAnswer() + " to " + listOfPeople.get(p).getName());
+					System.out.println("added " + actList.get(a).getAnswer() + " to " + listOfPeople.get(p).getName());
 				}
 			}
 		}

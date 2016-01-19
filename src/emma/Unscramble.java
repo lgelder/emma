@@ -19,7 +19,7 @@ public class Unscramble extends Activity implements ActivityInterface{
 	}
 	public Boolean checkAnswer(String a){
 		a = a.toLowerCase();
-		if (a.equals(getAnswer())){
+		if (a.equals(getAnswer().toLowerCase())){
 			this.completed = true;
 			return true;
 		}
