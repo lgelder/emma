@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class Austenia{
 	private List<City> cl;
+	private Boolean completed;
 	
 	// Constructor. Add another activity type and file later
 	public Austenia(String cityFile, String estateFile, String personFile, String activityFile1, 
@@ -25,6 +26,7 @@ public class Austenia{
 		cl = createCities(el, cityFile);
 		System.out.println("Created Cities");
 		System.out.println("Setup complete. \n\n");
+		this.completed = false;
 		
 	}
 	public static boolean isWhitespace(String str) {
@@ -170,7 +172,7 @@ public class Austenia{
 			for (int p = 0; p < listOfPeople.size(); p++){
 				if (actList.get(a).getPerson().equals(listOfPeople.get(p).getName())){
 					listOfPeople.get(p).addActivity(actList.get(a));
-					System.out.println("added " + actList.get(a).getAnswer() + " to " + listOfPeople.get(p).getName());
+//					System.out.println("added " + actList.get(a).getAnswer() + " to " + listOfPeople.get(p).getName());
 				}
 			}
 		}
@@ -281,7 +283,7 @@ public class Austenia{
 	public void run(){
 		Scanner read = new Scanner(System.in);
 		String selection = "";
-		while (!selection.equals("exit")){
+		while (!getCompleted() && !selection.equals("exit")){
 			System.out.println("Please select a city:");
 			for (City c : cl){
 				if (!c.getCompleted()){
@@ -324,13 +326,16 @@ public class Austenia{
 					String person = selection.toLowerCase();
 					int pindex = findPerson(cindex, eindex, person);
 					while (!cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getCompleted() && !selection.equals("exit")){
-						for (int i = 0; i < cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities().size(); i++){
-							System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).getPrintQuestion());
+						for (Activity a: cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities()){
+							if (!a.getCompleted()){
+								System.out.println(a.getPrintQuestion());
+
+							}
 							selection = read.nextLine().toLowerCase();
 							if (selection.equals("back")){
 								break;
 							}
-							Boolean answer = cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).checkAnswer(selection);
+							Boolean answer = a.checkAnswer(selection);
 //							if (answer.equals(true)){
 //								cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).setCompleted(true);
 //							}
@@ -344,7 +349,7 @@ public class Austenia{
 						}
 						if (counter == cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities().size()){
 							cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).setCompleted(true);
-							System.out.println("Congratulations! You have completed all of the activities this person asked of you!");
+							System.out.println("Congratulations! \nYou have completed all of the activities this person asked of you!");
 						}
 					}
 					int counter = 0;
@@ -355,21 +360,31 @@ public class Austenia{
 					}
 					if (counter == cl.get(cindex).getEstates().get(eindex).getPeople().size()){
 						cl.get(cindex).getEstates().get(eindex).setCompleted(true);
-						System.out.println("Congratulations! You have completed all of the activities at this estate!");
+						System.out.println("Congratulations! \nYou have completed all of the activities at this estate!");
 					}
 				}
 				int counter = 0;
 				for (Estate e : cl.get(cindex).getEstates()){
-					if (e.getCompleted() == true){
+					if (e.getCompleted()){
 						counter++;
 					}
 				}
 				if (counter == cl.get(cindex).getEstates().size()){
 					cl.get(cindex).setCompleted(true);
-					System.out.println("Congratulations! You have completed all of the activities in this city!");
+					System.out.println("Congratulations! \nYou have completed all of the activities in this city!");
 
 				}
 			}
+		    int counter = 0;
+		    for (City c: cl){
+		    	if (c.getCompleted()){
+		    		counter++;
+		    	}
+		    }
+		    if (counter == cl.size()){
+		    	setCompleted(true);
+		    	System.out.println("Congratulations! \nYou have completed all of the activities in the entire game!");
+		    }
 		}		
 		read.close();
 	}
@@ -522,5 +537,11 @@ public class Austenia{
 //		
 //		return listOfQuestions;
 //	}
+	public Boolean getCompleted() {
+		return completed;
+	}
+	public void setCompleted(Boolean completed) {
+		this.completed = completed;
+	}
 
 }
