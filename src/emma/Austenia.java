@@ -283,9 +283,9 @@ public class Austenia{
 		String selection = "";
 		while (!selection.equals("exit")){
 			System.out.println("Please select a city:");
-			for (int i = 0; i < cl.size(); i++){
-				if (!cl.get(i).getCompleted()){
-					System.out.println(cl.get(i).getName());
+			for (City c : cl){
+				if (!c.getCompleted()){
+					System.out.println(c.getName());
 				}
 			}
 			selection = read.nextLine();
@@ -296,8 +296,13 @@ public class Austenia{
 			int cindex = findCity(city);
 		    while (!cl.get(cindex).getCompleted() && !selection.equals("exit")){
 				System.out.println("Please select an estate:");
-				for (int i = 0; i < cl.get(cindex).getEstates().size(); i++){
-					System.out.println(cl.get(cindex).getEstates().get(i).getName());
+//				for (int i = 0; i < cl.get(cindex).getEstates().size(); i++){
+//					System.out.println(cl.get(cindex).getEstates().get(i).getName());
+//				}
+				for (Estate e : cl.get(cindex).getEstates()){
+					if (!e.getCompleted()) {
+						System.out.println(e.getName());
+					}
 				}
 				selection = read.nextLine();
 				if (selection.equals("back")){
@@ -307,8 +312,10 @@ public class Austenia{
 				int eindex = findEstate(cindex, estate);
 				while (!cl.get(cindex).getEstates().get(eindex).getCompleted() && !selection.equals("exit")){
 					System.out.println("Please select a person:");
-					for (int i = 0; i < cl.get(cindex).getEstates().get(eindex).getPeople().size(); i++){
-						System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(i).getName());
+					for (Person p : cl.get(cindex).getEstates().get(eindex).getPeople()){
+						if (!p.getCompleted()) {
+							System.out.println(p.getName());
+						}
 					}
 					selection = read.nextLine();
 					if (selection.equals("back")){
