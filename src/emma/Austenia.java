@@ -319,7 +319,6 @@ public class Austenia{
 					while (!cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getCompleted() && !selection.equals("exit")){
 						for (int i = 0; i < cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities().size(); i++){
 							System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).getPrintQuestion());
-							System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).getAnswer());
 							selection = read.nextLine().toLowerCase();
 							if (selection.equals("back")){
 								break;
