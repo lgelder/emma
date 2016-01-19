@@ -289,7 +289,7 @@ public class Austenia{
 				}
 			}
 			selection = read.nextLine();
-			if (selection.equals("exit")){
+			if (selection.equals("back")){
 				break;
 			}
 			String city = selection.toLowerCase();
@@ -300,7 +300,7 @@ public class Austenia{
 					System.out.println(cl.get(cindex).getEstates().get(i).getName());
 				}
 				selection = read.nextLine();
-				if (selection.equals("exit")){
+				if (selection.equals("back")){
 					break;
 				}
 				String estate = selection.toLowerCase();
@@ -311,7 +311,7 @@ public class Austenia{
 						System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(i).getName());
 					}
 					selection = read.nextLine();
-					if (selection.equals("exit")){
+					if (selection.equals("back")){
 						break;
 					}
 					String person = selection.toLowerCase();
@@ -319,12 +319,27 @@ public class Austenia{
 					while (!cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getCompleted() && !selection.equals("exit")){
 						for (int i = 0; i < cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities().size(); i++){
 							System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).getPrintQuestion());
+							System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).getAnswer());
 							selection = read.nextLine().toLowerCase();
+							if (selection.equals("back")){
+								break;
+							}
 							Boolean answer = cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).checkAnswer(selection);
+//							if (answer.equals(true)){
+//								cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).setCompleted(true);
+//							}
 							interpretAnswer(answer);
 						}
-						cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).setCompleted(true);
-						System.out.println("Congratulations! You have completed all of the activities this person asked of you!");
+						int counter = 0;
+						for (Activity a : cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities()){
+							if (a.getCompleted() == true){
+								counter++;
+							}
+						}
+						if (counter == cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities().size()){
+							cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).setCompleted(true);
+							System.out.println("Congratulations! You have completed all of the activities this person asked of you!");
+						}
 					}
 					int counter = 0;
 					for (Person p : cl.get(cindex).getEstates().get(eindex).getPeople()){
