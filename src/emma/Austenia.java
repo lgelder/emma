@@ -13,6 +13,7 @@ public class Austenia{
 	// Constructor. Add another activity type and file later
 	public Austenia(String cityFile, String estateFile, String personFile, String activityFile1, 
 			String activityFile2, String activityFile3){
+		System.out.println("Setting up the game.");
 		System.out.print("Creating Activities...");
 		List<Activity> al = createActivities(activityFile1, activityFile2, activityFile3);
 		System.out.println("Created Activities");
@@ -349,7 +350,7 @@ public class Austenia{
 						}
 						if (counter == cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities().size()){
 							cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).setCompleted(true);
-							System.out.println("Congratulations! \nYou have completed all of the activities this person asked of you!");
+							System.out.println("Congratulations! \nYou have completed all of the activities this person asked of you!\n");
 						}
 					}
 					int counter = 0;
@@ -360,7 +361,7 @@ public class Austenia{
 					}
 					if (counter == cl.get(cindex).getEstates().get(eindex).getPeople().size()){
 						cl.get(cindex).getEstates().get(eindex).setCompleted(true);
-						System.out.println("Congratulations! \nYou have completed all of the activities at this estate!");
+						System.out.println("Congratulations! \nYou have completed all of the activities at this estate!\n");
 					}
 				}
 				int counter = 0;
@@ -371,7 +372,7 @@ public class Austenia{
 				}
 				if (counter == cl.get(cindex).getEstates().size()){
 					cl.get(cindex).setCompleted(true);
-					System.out.println("Congratulations! \nYou have completed all of the activities in this city!");
+					System.out.println("Congratulations! \nYou have completed all of the activities in this city!\n");
 
 				}
 			}
@@ -384,6 +385,7 @@ public class Austenia{
 		    if (counter == cl.size()){
 		    	setCompleted(true);
 		    	System.out.println("Congratulations! \nYou have completed all of the activities in the entire game!");
+		    	break;
 		    }
 		}		
 		read.close();
