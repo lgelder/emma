@@ -16,7 +16,7 @@ public class TriviaQuestion extends Activity implements ActivityInterface{
 		this.choices = choices;
 	}
 	public String getPrintQuestion(){
-		return getQuestion() + "\n" + getInstructions() + getStringChoices();
+		return getInstructions() + getQuestion() + "\n" + getStringChoices();
 	}
 
 	public String getQuestion() {
@@ -45,8 +45,7 @@ public class TriviaQuestion extends Activity implements ActivityInterface{
 		this.choices = choices;
 	}
 	public Boolean checkAnswer(String a){
-		a = a.toLowerCase();
-		if (a == getAnswer()){
+		if (a.equals(getAnswer().replaceAll("[^a-zA-Z ]", "").toLowerCase())){
 			this.completed = true;
 			return true;
 		}

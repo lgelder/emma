@@ -1,19 +1,19 @@
 package emma;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Austenia{
 	private List<City> cl;
+	private Boolean completed;
 	
-	// Constructor. Add another file later
+	// Constructor. Add another activity type and file later
 	public Austenia(String cityFile, String estateFile, String personFile, String activityFile1, 
 			String activityFile2, String activityFile3){
+		System.out.println("Setting up the game.");
 		System.out.print("Creating Activities...");
 		List<Activity> al = createActivities(activityFile1, activityFile2, activityFile3);
 		System.out.println("Created Activities");
@@ -26,7 +26,8 @@ public class Austenia{
 		System.out.print("Creating Cities...");
 		cl = createCities(el, cityFile);
 		System.out.println("Created Cities");
-		System.out.println("Setup complete.");
+		System.out.println("Setup complete. \n\n");
+		this.completed = false;
 		
 	}
 	public static boolean isWhitespace(String str) {
@@ -179,7 +180,7 @@ public class Austenia{
 		System.out.print("added activities to people...");
 		return listOfPeople;
 	}	
-	
+
 	public static List<Estate> createEstates(List<Person> plist, String file){
 		List<Estate> listOfEstates = new ArrayList<Estate>();
 		try {
@@ -280,60 +281,154 @@ public class Austenia{
 		return questionchoices;
 	}
 
+//	public City userInputCity(Scanner read){
+//		System.out.println("Please select a city:");
+//		for (City c : cl){
+//			if (!c.getCompleted()){
+//				System.out.println(c.getName());
+//			}
+//		}
+//		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase(); //found this function on StackOverflow: 
+//		if (selection.equals("back")){		//http://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
+//			return new City("empty");
+//		}
+//		int cindex = findCity(selection);
+//		if (cindex == -1){
+//			break;
+//		}
+//		
+//		
+//		return city;
+//	}
+	
 	public void run(){
 		Scanner read = new Scanner(System.in);
 		String selection = "";
-		while (!selection.equals("exit")){
+		while (!getCompleted() && !selection.equals("exit")){
+//			userInputCity(read);
 			System.out.println("Please select a city:");
-			for (int i = 0; i < cl.size(); i++){
-				if (!cl.get(i).getCompleted()){
-					System.out.println(cl.get(i).getName());
+			for (City c : cl){
+				if (!c.getCompleted()){
+					System.out.println(c.getName());
 				}
 			}
-			selection = read.nextLine();
-			String city = selection.toLowerCase();
-			int cindex = findCity(city);
-		    while (!cl.get(cindex).getCompleted() || !selection.equals("exit")){
+			selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase(); //found this function on StackOverflow: 
+			if (selection.equals("back")){		//http://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
+				break;
+			}
+			int cindex = findCity(selection);
+			if (cindex == -1){
+				break;
+			}
+		    while (!cl.get(cindex).getCompleted() && !selection.equals("exit")){
 				System.out.println("Please select an estate:");
-				for (int i = 0; i < cl.get(cindex).getEstates().size(); i++){
-					System.out.println(cl.get(cindex).getEstates().get(i).getName());
-				}
-				selection = read.nextLine();
-				String estate = selection.toLowerCase();
-				int eindex = findEstate(cindex, estate);
-				while (!cl.get(cindex).getEstates().get(eindex).getCompleted() || !selection.equals("exit")){
-					System.out.println("Please select a person:");
-					for (int i = 0; i < cl.get(cindex).getEstates().get(eindex).getPeople().size(); i++){
-						System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(i).getName());
+				for (Estate e : cl.get(cindex).getEstates()){
+					if (!e.getCompleted()) {
+						System.out.println(e.getName());
 					}
-					selection = read.nextLine();
-					String person = selection.toLowerCase();
-					int pindex = findPerson(cindex, eindex, person);
-					while (!cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getCompleted() || !selection.equals("exit")){
-						for (int i = 0; i < cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities().size(); i++){
-							System.out.println(cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).getPrintQuestion());
-							selection = read.nextLine().toLowerCase();
-							Boolean answer = cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivity(i).checkAnswer(selection);
-							interpretAnswer(answer);
+				}
+				selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
+				if (selection.equals("back")){
+					break;
+				}
+				int eindex = findEstate(cindex, selection);
+				while (!cl.get(cindex).getEstates().get(eindex).getCompleted() && !selection.equals("exit")){
+					System.out.println("Please select a person:");
+					for (Person p : cl.get(cindex).getEstates().get(eindex).getPeople()){
+						if (!p.getCompleted()) {
+							System.out.println(p.getName());
 						}
 					}
+					selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
+					if (selection.equals("back")){
+						break;
+					}
+					int pindex = findPerson(cindex, eindex, selection);
+					while (!cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getCompleted() && !selection.equals("exit")){
+						for (Activity a: cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities()){
+							if (!a.getCompleted()){
+								System.out.println(a.getPrintQuestion());
+
+							}
+							selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
+							if (selection.equals("back")){
+								break;
+							}
+							Boolean answer = a.checkAnswer(selection);
+							interpretAnswer(answer);
+						}
+						int counter = 0;
+						for (Activity a : cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities()){
+							if (a.getCompleted() == true){
+								counter++;
+							}
+						}
+						if (counter == cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getActivities().size()){
+							cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).setCompleted(true);
+							System.out.println("Congratulations! \nYou have completed all of the activities " 
+							+ cl.get(cindex).getEstates().get(eindex).getPeople().get(pindex).getName() + " asked of you!\n");
+						}
+					}
+					int counter = 0;
+					for (Person p : cl.get(cindex).getEstates().get(eindex).getPeople()){
+						if (p.getCompleted() == true){
+							counter++;
+						}
+					}
+					if (counter == cl.get(cindex).getEstates().get(eindex).getPeople().size()){
+						cl.get(cindex).getEstates().get(eindex).setCompleted(true);
+						System.out.println("Congratulations! \nYou have completed all of the activities at " 
+								+ cl.get(cindex).getEstates().get(eindex).getName() + "!\n");
+					}
+				}
+				int counter = 0;
+				for (Estate e : cl.get(cindex).getEstates()){
+					if (e.getCompleted()){
+						counter++;
+					}
+				}
+				if (counter == cl.get(cindex).getEstates().size()){
+					cl.get(cindex).setCompleted(true);
+					System.out.println("Congratulations! \nYou have completed all of the activities in " + cl.get(cindex).getName() + "!\n");
+
 				}
 			}
+		    int counter = 0;
+		    for (City c: cl){
+		    	if (c.getCompleted()){
+		    		counter++;
+		    	}
+		    }
+		    if (counter == cl.size()){
+		    	setCompleted(true);
+		    	System.out.println("Congratulations! \nYou have completed all of the activities in the entire game!");
+		    	break;
+		    }
 		}		
 		read.close();
 	}
 	
 	public int findCity(String city){
 		for (int i = 0; i < cl.size(); i++){
-	        if((cl.get(i).getCompleted().equals(false)) && (cl.get(i).getName()).toLowerCase().equals(city)){  
+	        if((cl.get(i).getCompleted().equals(false)) 
+	        		&& (cl.get(i).getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(city)){  
 	        	return i;
 	        }
 		}
-		return -1;
+        return -1;
 	}
+//		for (City c : cl)
+//			if ((c.getCompleted().equals(false)) && (c.getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(city)){  
+//	        	return c;
+//	        }
+//	    	return new City("nullCity");
+//		}
+	
+
 	public int findEstate(int cityindex, String estate){
 		for (int i = 0; i < cl.get(cityindex).getEstates().size(); i++){
-	        if((cl.get(cityindex).getEstates().get(i).getCompleted().equals(false)) && (cl.get(cityindex).getEstates().get(i).getName()).toLowerCase().equals(estate)){  
+	        if((cl.get(cityindex).getEstates().get(i).getCompleted().equals(false)) 
+	        		&& (cl.get(cityindex).getEstates().get(i).getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(estate)){  
 	        	return i;
 	        }
 		}
@@ -342,7 +437,7 @@ public class Austenia{
 	public int findPerson(int cityindex, int estateindex, String person){
 		for (int i = 0; i < cl.get(cityindex).getEstates().get(estateindex).getPeople().size(); i++){
 	        if((cl.get(cityindex).getEstates().get(estateindex).getPeople().get(i).getCompleted().equals(false)) 
-	        		&& (cl.get(cityindex).getEstates().get(estateindex).getPeople().get(i).getName()).toLowerCase().equals(person)){  
+	        		&& (cl.get(cityindex).getEstates().get(estateindex).getPeople().get(i).getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(person)){  
 	        	return i;
 	        }
 		}
@@ -350,10 +445,6 @@ public class Austenia{
 	}
 	
 	public static void main(String[] a){
-		String welcome = "You have been transported through time to 18th century England." 
-		+ "\nIf you wish to return to your original time-period, type exit at any point.";
-		System.out.println(welcome);
-
 		Austenia austen = new Austenia(
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Cities.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Estates.txt", 
@@ -361,9 +452,13 @@ public class Austenia{
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\TriviaQuestions.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\CompleteTheQuote.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Unscramble.txt");
+		
+		String welcome = "You have been transported through time to 18th century England." 
+		+ "\nIf you wish to return to your original time-period, type exit at any point.";
+		System.out.println(welcome);
+		
 		austen.run();
 		
-
 		String thanksForPlaying = "Thank you for visiting Austenia. We hope you come back soon.";
 		System.out.println(thanksForPlaying);
 		
@@ -377,99 +472,12 @@ public class Austenia{
 		}
 		
 	}
-//	public static boolean checkAnswer(Activity a){
-//	Scanner readIn = new Scanner(System.in);
-//    String userChoice = readIn.nextLine();
-////    int userInt = Integer.parseInt(userChoice);
-//    System.out.println("You chose " + userChoice + ".");
-//    
-//    return a.checkAnswer(userChoice);
-//    
-//}
-//	
-//	public static Estate setUp(){
-//		List<Activity> listOfQuestions = Austenia.createTQs();
-//		
-//		Person mrWoodhouse = new Person("Mr. Woodhouse");
-//		mrWoodhouse.addActivity(listOfQuestions.get(0));
-//		
-//		Person mrsElton = new Person("Mrs. Elton");
-//		mrsElton.addActivity(listOfQuestions.get(1));
-//		Person emmaW = new Person("Emma Woodhouse");
-//		emmaW.addActivity(listOfQuestions.get(2));
-//		Estate hartfield = new Estate("Hartfield");
-//		hartfield.addPerson(mrWoodhouse);
-////		hartfield.addPerson(mrsElton);
-//		hartfield.addPerson(emmaW);
-//		return hartfield;
-//	}
-//	
-//	public static void runEstate(Estate l){
-//		for (int i=0; i < 3; i++){
-//			System.out.println("Hello, my name is " + l.getPeople().get(i).getName() 
-//					+ ".\n" + l.getPeople().get(i).getActivity(0).getPrintQuestion());
-//			Scanner readIn = new Scanner(System.in);
-//		    String userChoice = readIn.nextLine();
-////		    int userInt = Integer.parseInt(userChoice);
-//		    System.out.println("You chose " + userChoice + ".");
-//			boolean b = l.getPeople().get(i).getActivity(0).checkAnswer(userChoice);
-//			interpretAnswer(b);
-//			readIn.close();
-//		}
-//	}
-//	
-//	
-//	while (true){
-//	selection = read.nextLine();
-//	System.out.println(selection);
-//	if (selection.toLowerCase() == "exit"){
-//		break;
-//	}
-//	if (selection == "1" || selection.toLowerCase() == "hartfield"){
-//		Locale hartfield = setUp();
-//		System.out.println("Thanks for choosing Hartfield.");
-//		runEstate(hartfield);
-//	}
-//}
-//
-//	public static List<Activity> createTQs(){
-//		List<Activity> listOfQuestions = new ArrayList<Activity>();
-//		
-//		List<String> listOfOptions0 = new ArrayList<String>();
-//		listOfOptions0.add("Mr. Perry");
-//		listOfOptions0.add("Mr. Elton");
-//		listOfOptions0.add("Mr. Knightley");
-//
-//		List<Option> listOfOptions1 = createOptions(listOfOptions0);
-//		Activity question1 = new TriviaQuestion("Mr. Woodhouse's Question", 
-//			 "What is the name of my doctor?", 
-//				"Mr. Perry", listOfOptions1);
-//		listOfQuestions.add(question1);
-//
-//		List<String> listOfOptions = new ArrayList<String>();
-//		listOfOptions.add("Elizabeth");
-//		listOfOptions.add("Augusta");
-//		listOfOptions.add("Jane");
-//		listOfOptions.add("Georgiana");
-//		
-//		List<Option> listOfOptions2 = createOptions(listOfOptions);
-//		Activity question2 = new TriviaQuestion("Mrs. Elton Question", 
-//				"What is my first name?", 
-//				"Augusta", listOfOptions2);
-//		listOfQuestions.add(question2);		
-//		
-//		List<String> listOfOptions3 = new ArrayList<String>();
-//		listOfOptions3.add("Frank Churchill");
-//		listOfOptions3.add("Mr. Elton");
-//		listOfOptions3.add("Mr. Knightley");
-//
-//		List<Option> listOfOptions4 = createOptions(listOfOptions3);
-//		Activity question3 = new TriviaQuestion("Emma Woodhouse's Question", 
-//			 "Which man did I mistakenly think Harriet was in love with?", 
-//				"Frank Churchill", listOfOptions4);
-//		listOfQuestions.add(question3);
-//		
-//		return listOfQuestions;
-//	}
+
+	public Boolean getCompleted() {
+		return completed;
+	}
+	public void setCompleted(Boolean completed) {
+		this.completed = completed;
+	}
 
 }
