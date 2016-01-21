@@ -2,6 +2,7 @@ package emma;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,10 +11,11 @@ public class Austenia{
 	private List<City> cl;
 	private Boolean completed;
 	private int correct;
+	private HashMap<String, Integer> scores;
 	
 	// Constructor. Add another activity type and file later
 	public Austenia(String cityFile, String estateFile, String personFile, String activityFile1, 
-			String activityFile2, String activityFile3){
+			String activityFile2, String activityFile3, String scoreFile){
 		System.out.println("Setting up the game.");
 		System.out.print("Creating Activities...");
 		List<Activity> al = createActivities(activityFile1, activityFile2, activityFile3);
@@ -27,6 +29,7 @@ public class Austenia{
 		System.out.print("Creating Cities...");
 		cl = createCities(el, cityFile);
 		System.out.println("Created Cities");
+		setScores(createHighScores(scoreFile));
 		System.out.println("Setup complete. \n\n");
 		this.completed = false;
 		
@@ -282,6 +285,29 @@ public class Austenia{
 		return questionchoices;
 	}
 
+	public static HashMap<String, Integer> createHighScores(String scoreFile){
+		HashMap<String, Integer> scores = new HashMap<String, Integer>();
+		try{
+			FileReader fileReader = new FileReader(scoreFile);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line = null;
+			line = bufferedReader.readLine();
+			while (line != null){
+				String[] items = line.split("\\s+");
+				String name = items[0];
+				int score = Integer.parseInt(items[1]);
+				scores.put(name, score);
+				line = bufferedReader.readLine();
+
+			}
+			bufferedReader.close();
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+		
+		return scores;
+	}
+	
 	public City userInputCity(Scanner read){
 		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase(); //found this function on StackOverflow: 
 		City city = findCity(selection);		//http://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
@@ -386,7 +412,22 @@ public class Austenia{
 		    	break;
 		    }
 		}		
+		System.out.println("You completed " + this.correct + " actitivies!\nWould you like to save your score?");
+		String keep = read.nextLine().toLowerCase();
+		saveScore(read, keep);
 		read.close();
+	}
+	
+	public void saveScore(Scanner read, String keep){
+		if (keep.startsWith("y")){
+			System.out.print("Please enter your name (one word only): ");
+			String name = read.nextLine();
+			try (FileWriter writer = new FileWriter("C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Scores.txt", true)) {
+				writer.write(name + "\t" + this.correct + "\n");
+			}catch (IOException e){
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public String getUncompletedPrintCities() {
@@ -452,7 +493,8 @@ public class Austenia{
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\People.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\TriviaQuestions.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\CompleteTheQuote.txt", 
-				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Unscramble.txt");
+				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Unscramble.txt",
+				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Scores.txt");
 		
 		String welcome = "Welcome to 18th-century England!. Here you can visit cities and estates \n"
 				+ "from Jane Austen's novels and complete activities given to you by various \n"
@@ -460,14 +502,23 @@ public class Austenia{
 				+ "can type 'back' to go up a level (leave an estate, etc) at any time. (Leaving \n"
 				+ "the country takes you out of the game.) We hope you enjoy your time here!";
 		System.out.println(welcome);
+		System.out.println("Here are the current scores of all players. Try to beat them!");
+		austen.printHighScores();
 		
 		austen.run();
-		String score = "You completed " + austen.getCorrect() + " actitivies!\n";
+
 		String thanksForPlaying = "Thank you for visiting us! We hope you come back soon.";
-		System.out.println(score + thanksForPlaying);
+		System.out.println(thanksForPlaying);
 		
 	}
 
+	private void printHighScores() {
+		for ( HashMap.Entry<String, Integer> entry : scores.entrySet()) {
+		    String name = entry.getKey();
+		    int score = entry.getValue();
+		    System.out.println(name + "\t" + score);
+		}		
+	}
 	public static void interpretAnswer(boolean b){
 		if (b == true){
 			System.out.println("Congratulations! You are correct!\n");
@@ -487,6 +538,12 @@ public class Austenia{
 	}
 	public void setCorrect(int correct) {
 		this.correct = correct;
+	}
+	public HashMap<String, Integer> getScores() {
+		return scores;
+	}
+	public void setScores(HashMap<String, Integer> scores) {
+		this.scores = scores;
 	}
 
 }
