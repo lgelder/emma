@@ -150,7 +150,7 @@ public class Austenia{
 	        	while(!isWhitespace(line5) && line5 != null){
 	        		String name = line5;
 	        		String estate = bufferedReader.readLine();
-	        		Person p = new Person(name, estate);
+	        		Person p = new Person(name, estate, false);
 	        		listOfPeople.add(p);
 	        		line5 = bufferedReader.readLine();
 	        	}
@@ -195,7 +195,7 @@ public class Austenia{
 	        	while(!isWhitespace(line5) && line5 != null){
 	        		String name = line5;
 	        		String city = bufferedReader.readLine();
-	        		Estate e = new Estate(name, city);
+	        		Estate e = new Estate(name, city, false);
 	        		listOfEstates.add(e);
 	        		line5 = bufferedReader.readLine();
 	        	}
@@ -240,7 +240,7 @@ public class Austenia{
 	        	line5 = bufferedReader.readLine();
 	        	while(!isWhitespace(line5) && line5 != null){
 	        		String name = line5;
-	        		City c = new City(name);
+	        		City c = new City(name, false);
 	        		listOfCities.add(c);
 	        		line5 = bufferedReader.readLine();
 	        	}
@@ -282,66 +282,46 @@ public class Austenia{
 		return questionchoices;
 	}
 
-//	public City userInputCity(Scanner read){
-//		System.out.println("Please select a city:");
-//		for (City c : cl){
-//			if (!c.getCompleted()){
-//				System.out.println(c.getName());
-//			}
-//		}
-//		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase(); //found this function on StackOverflow: 
-//		if (selection.equals("back")){		//http://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
-//			return new City("empty");
-//		}
-//		int cindex = findCity(selection);
-//		if (cindex == -1){
-//			break;
-//		}
-//		
-//		
-//		return city;
-//	}
+	public City userInputCity(Scanner read){
+		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase(); //found this function on StackOverflow: 
+		City city = findCity(selection);		//http://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
+		return city;
+	}
+	
+	public Estate userInputEstate(Scanner read, City city){
+		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
+		Estate estate = findEstate(city, selection);
+		return estate;
+	}
+	
+	public Person userInputPerson(Scanner read, Estate estate){
+		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
+		Person person = findPerson(estate, selection);
+		return person;
+	}
 	
 	public void run(){
 		Scanner read = new Scanner(System.in);
 		String selection = "";
 		while (!getCompleted() && !selection.equals("exit")){
-//			userInputCity(read);
-			System.out.println("Please select a city to which to travel from the following list:");
-			for (City c : cl){
-				if (!c.getCompleted()){
-					System.out.println(c.getName());
-				}
-			}
-			selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase(); //found this function on StackOverflow: 
-			if (selection.equals("back")){		//http://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
+			System.out.println("\nPlease select a city to which to travel from the following list:" + getUncompletedPrintCities());
+			City city = userInputCity(read);
+			if (city.getName().equals("back") || (city.getName().equals("exit"))){
 				break;
 			}
-			City city = findCity(selection);
 		    while (!city.getName().equals("null") && !city.getCompleted() && !selection.equals("exit")){
-				System.out.println("Please select an estate to visit from the following list:");
-				for (Estate e : city.getEstates()){
-					if (!e.getCompleted()) {
-						System.out.println(e.getName());
-					}
-				}
-				selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-				if (selection.equals("back")){
+				System.out.println("\nWelcome to " +city.getName() + "! Please select an estate to visit from the \nfollowing list:" + city.getUncompletedPrintEstates());
+				Estate estate = userInputEstate(read, city);
+				if (estate.getName().equals("back")){
 					break;
 				}
-				Estate estate = findEstate(city, selection);
 				while (!estate.getName().equals("null") && !estate.getCompleted() && !selection.equals("exit")){
-					System.out.println("Please select a person with whom you would like to converse from the following list:");
-					for (Person p : estate.getPeople()){
-						if (!p.getCompleted()) {
-							System.out.println(p.getName());
-						}
-					}
-					selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-					if (selection.equals("back")){
+					System.out.println("\nWelcome to " + estate.getName() + "! Please select a person with whom you would like \nto converse "
+							+ "from the following list of people currently at " + estate.getName() + estate.getUncompletedPrintPeople());
+					Person person = userInputPerson(read, estate);
+					if (person.getName().equals("back")){
 						break;
 					}
-					Person person = findPerson(estate, selection);
 					while (!person.getName().equals("null") && !person.getCompleted() && !selection.equals("exit")){
 						for (Activity a: person.getActivities()){
 							if (!a.getCompleted()){
@@ -349,7 +329,7 @@ public class Austenia{
 
 							}
 							selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-							if (selection.equals("exit")){
+							if (selection.equals("back")){
 								break;
 							}
 							Boolean answer = a.checkAnswer(selection);
@@ -409,29 +389,61 @@ public class Austenia{
 		read.close();
 	}
 	
-	public City findCity(String city){
-		for (City c : cl)
+	public String getUncompletedPrintCities() {
+		String cities = "";
+		for (City c : cl){
+			if (!c.getCompleted()){
+				cities += "\n" + c.getName();
+			}
+		}
+		cities += "\n";
+		return cities;
+	}
+	
+	public City findCity(String city){ //turn these into factories????
+		if (city.equals("back")){
+			return new City("back", true);
+		}
+//		if (city.equals("exit")){
+//			return new City("exit", true);		
+//		}
+		for (City c : cl){
 			if ((c.getCompleted().equals(false)) && (c.getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(city)){  
 	        	return c;
 	        }
-	    	return new City("null");
 		}
+		return new City("null", true);
+	}
 
 	public Estate findEstate(City city, String estate){
-		for (Estate e : city.getEstates())
+		if (estate.equals("back")){
+			return new Estate("back", city.getName(), true);
+		}
+//		if (estate.equals("exit")){
+//			return new Estate("exit", city.getName(), true);
+//		}
+		for (Estate e : city.getEstates()){
 			if ((e.getCompleted().equals(false)) && (e.getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(estate)){  
 	        	return e;
 	        }
-	    	return new Estate("null", city.getName());
 		}
-		
+		return new Estate("null", city.getName(), true);
+	}
+	
 	public Person findPerson(Estate estate, String person){
-		for (Person p : estate.getPeople())
+		if (person.equals("back")){
+			return new Person("back", estate.getName(), true);
+		}
+//		if (person.equals("exit")){
+//			return new Person("exit", estate.getName(), true);
+//		}
+		for (Person p : estate.getPeople()){
 			if ((p.getCompleted().equals(false)) && (p.getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(person)){  
 	        	return p;
 	        }
-	    	return new Person("null", estate.getName());
 		}
+		return new Person("null", estate.getName(), true);
+	}
 	
 	public static void main(String[] a){
 		Austenia austen = new Austenia(
@@ -442,13 +454,16 @@ public class Austenia{
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\CompleteTheQuote.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Unscramble.txt");
 		
-		String welcome = "You have been transported through time to 18th century England." 
-		+ "\nIf you wish to return to your original time-period, type exit at any point.";
+		String welcome = "Welcome to 18th-century England!. Here you can visit cities and estates \n"
+				+ "from Jane Austen's novels and complete activities given to you by various \n"
+				+ "characters.  You can enter your choices and answers by typing them, and \n"
+				+ "can type 'back' to go up a level (leave an estate, etc) at any time. (Leaving \n"
+				+ "the country takes you out of the game.) We hope you enjoy your time here!";
 		System.out.println(welcome);
 		
 		austen.run();
 		String score = "You completed " + austen.getCorrect() + " actitivies!\n";
-		String thanksForPlaying = "Thank you for visiting Austenia. We hope you come back soon.";
+		String thanksForPlaying = "Thank you for visiting us! We hope you come back soon.";
 		System.out.println(score + thanksForPlaying);
 		
 	}
@@ -459,7 +474,6 @@ public class Austenia{
 		}else{
 			System.out.println("Sorry, that's incorrect.\n");
 		}
-		
 	}
 
 	public Boolean getCompleted() {

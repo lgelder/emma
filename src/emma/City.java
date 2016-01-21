@@ -8,9 +8,9 @@ public class City {
 	private Boolean completed;
 	private List<Estate> estates;
 	
-	public City(String name){
+	public City(String name, Boolean completed){
 		this.name = name;
-		this.completed = false;
+		this.completed = completed;
 		this.estates = new ArrayList<Estate>();
 	}
 	
@@ -19,6 +19,17 @@ public class City {
 	}
 	
 	public List<Estate> getEstates(){
+		return estates;
+	}
+	
+	public String getUncompletedPrintEstates(){
+		String estates = "";
+		for (Estate e : this.estates){
+			if (!e.getCompleted()){
+				estates += "\n" + e.getName();
+			}
+		}
+		estates += "\n";
 		return estates;
 	}
 
