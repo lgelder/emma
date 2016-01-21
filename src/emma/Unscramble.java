@@ -18,8 +18,7 @@ public class Unscramble extends Activity implements ActivityInterface{
 		return this.instructions + this.scrambled;
 	}
 	public Boolean checkAnswer(String a){
-		a = a.toLowerCase();
-		if (a.equals(getAnswer().toLowerCase())){
+		if (a.equals(getAnswer().replaceAll("[^a-zA-Z ]", "").toLowerCase())){
 			this.completed = true;
 			return true;
 		}

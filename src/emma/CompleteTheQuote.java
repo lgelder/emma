@@ -52,8 +52,7 @@ public class CompleteTheQuote extends Activity implements ActivityInterface{
 		this.choices = choices;
 	}
 	public Boolean checkAnswer(String a){
-		a = a.toLowerCase();
-		if (a.equals(getAnswer().toLowerCase())){
+		if (a.equals(getAnswer().replaceAll("[^a-zA-Z ]", "").toLowerCase())){
 			this.completed = true;
 			return true;
 		}
