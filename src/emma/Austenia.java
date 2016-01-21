@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Austenia{
 	private List<City> cl;
 	private Boolean completed;
+	private int correct;
 	
 	// Constructor. Add another activity type and file later
 	public Austenia(String cityFile, String estateFile, String personFile, String activityFile1, 
@@ -306,7 +307,7 @@ public class Austenia{
 		String selection = "";
 		while (!getCompleted() && !selection.equals("exit")){
 //			userInputCity(read);
-			System.out.println("Please select a city:");
+			System.out.println("Please select a city to which to travel from the following list:");
 			for (City c : cl){
 				if (!c.getCompleted()){
 					System.out.println(c.getName());
@@ -318,7 +319,7 @@ public class Austenia{
 			}
 			City city = findCity(selection);
 		    while (!city.getName().equals("null") && !city.getCompleted() && !selection.equals("exit")){
-				System.out.println("Please select an estate:");
+				System.out.println("Please select an estate to visit from the following list:");
 				for (Estate e : city.getEstates()){
 					if (!e.getCompleted()) {
 						System.out.println(e.getName());
@@ -330,7 +331,7 @@ public class Austenia{
 				}
 				Estate estate = findEstate(city, selection);
 				while (!estate.getName().equals("null") && !estate.getCompleted() && !selection.equals("exit")){
-					System.out.println("Please select a person:");
+					System.out.println("Please select a person with whom you would like to converse from the following list:");
 					for (Person p : estate.getPeople()){
 						if (!p.getCompleted()) {
 							System.out.println(p.getName());
@@ -348,11 +349,14 @@ public class Austenia{
 
 							}
 							selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-							if (selection.equals("back")){
+							if (selection.equals("exit")){
 								break;
 							}
 							Boolean answer = a.checkAnswer(selection);
 							interpretAnswer(answer);
+							if (answer){
+								this.correct++;
+							}
 						}
 						int counter = 0;
 						for (Activity a : person.getActivities()){
@@ -406,20 +410,12 @@ public class Austenia{
 	}
 	
 	public City findCity(String city){
-//		for (int i = 0; i < cl.size(); i++){
-//	        if((cl.get(i).getCompleted().equals(false)) 
-//	        		&& (cl.get(i).getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(city)){  
-//	        	return i;
-//	        }
-//		}
-//        return -1;
 		for (City c : cl)
 			if ((c.getCompleted().equals(false)) && (c.getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(city)){  
 	        	return c;
 	        }
 	    	return new City("null");
 		}
-	
 
 	public Estate findEstate(City city, String estate){
 		for (Estate e : city.getEstates())
@@ -429,14 +425,6 @@ public class Austenia{
 	    	return new Estate("null", city.getName());
 		}
 		
-//		for (int i = 0; i < cl.get(cityindex).getEstates().size(); i++){
-//	        if((cl.get(cityindex).getEstates().get(i).getCompleted().equals(false)) 
-//	        		&& (cl.get(cityindex).getEstates().get(i).getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(estate)){  
-//	        	return i;
-//	        }
-//		}
-//		return -1;
-	
 	public Person findPerson(Estate estate, String person){
 		for (Person p : estate.getPeople())
 			if ((p.getCompleted().equals(false)) && (p.getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(person)){  
@@ -444,15 +432,6 @@ public class Austenia{
 	        }
 	    	return new Person("null", estate.getName());
 		}
-
-//		for (int i = 0; i < cl.get(cityindex).getEstates().get(estateindex).getPeople().size(); i++){
-//	        if((cl.get(cityindex).getEstates().get(estateindex).getPeople().get(i).getCompleted().equals(false)) 
-//	        		&& (cl.get(cityindex).getEstates().get(estateindex).getPeople().get(i).getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(person)){  
-//	        	return i;
-//	        }
-//		}
-//		return -1;
-	
 	
 	public static void main(String[] a){
 		Austenia austen = new Austenia(
@@ -468,9 +447,9 @@ public class Austenia{
 		System.out.println(welcome);
 		
 		austen.run();
-		
+		String score = "You completed " + austen.getCorrect() + " actitivies!\n";
 		String thanksForPlaying = "Thank you for visiting Austenia. We hope you come back soon.";
-		System.out.println(thanksForPlaying);
+		System.out.println(score + thanksForPlaying);
 		
 	}
 
@@ -488,6 +467,12 @@ public class Austenia{
 	}
 	public void setCompleted(Boolean completed) {
 		this.completed = completed;
+	}
+	public int getCorrect() {
+		return correct;
+	}
+	public void setCorrect(int correct) {
+		this.correct = correct;
 	}
 
 }
