@@ -4,17 +4,16 @@ import java.util.*;
 
 //a non-playable character
 
-public class Person implements PersonInterface{
-	
+public class Person {
 	private String name;
 	private String estate;
 	private Boolean completed;
 	private List<Activity> activities;
 	
-	public Person(String name, String estate){
+	public Person(String name, String estate, Boolean completed){
 		this.name = name;
 		this.estate = estate;
-		this.completed = false;
+		this.completed = completed;
 		this.activities = new ArrayList<Activity>();
 	}
 	
