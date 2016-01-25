@@ -27,13 +27,14 @@ public class Country{
 			String activityFile2, String activityFile3, String scoreFile){
 		System.out.println("Setting up the game.");
 		System.out.print("Creating 'States'...");
-		this.inGame = new InGameState(this);
+		this.inGame = new InCountryState(this);
 		this.inCity = new InCityState(this);
 		this.inEstate = new InEstateState(this);
 		this.inPerson = new InPersonState(this);
 		this.inActivity = new InActivityState(this);
 		this.gameOver = new GameOverState(this);
 		this.saving = new SavingState(this);
+		this.setState(inGame);
 		System.out.print("Created 'States.' \nCreating Cities...");
 		cl = createCities(cityFile);
 		System.out.print("Created Cities. \nCreating Estates...");
@@ -45,23 +46,11 @@ public class Country{
 		System.out.print("Created Activities. \nImporting scores...");
 		setScores(createHighScores(scoreFile));
 		System.out.print("Scores Imported.\n");
-//		System.out.print("Creating Activities...");
-//		List<Activity> al = createActivities(activityFile1, activityFile2, activityFile3);
-//		System.out.println("Created Activities");
-//		System.out.print("Creating People...");
-//		List<Person> pl = createPeople(al, personFile);
-//		System.out.println("Created People");
-//		System.out.print("Creating Estates...");
-//		List<Estate> el = createEstates(pl, estateFile);
-//		System.out.println("Created Estates");
-//		System.out.print("Creating Cities...");
-//		cl = createCities(el, cityFile);
-//		System.out.println("Created Cities");
-//		setScores(createHighScores(scoreFile));
 		System.out.println("Setup complete. \n\n");
 		this.completed = false;
 		
 	}
+	
 	public static boolean isWhitespace(String str) {
 	    if (str == null) {
 	        return false;
@@ -430,16 +419,22 @@ public class Country{
 		read.close();
 	}
 	
-	public void run(){
-		
-		
-		
+	public void run(Scanner read){
+		String userInput = null;
+		while (this.getState() != gameOver){
+			userInput = read.nextLine();
+			if (userInput.equals("back")){
+				this.state.entersBack();
+			} else if (userInput.equals("exit")){
+				this.state.entersExit();
+			} else {
+				this.state.entersOther(userInput);
+			}
+		}
 	}
 	
 	public void saveScore(Scanner read, String keep){
 		if (keep.startsWith("y")){
-//			System.out.print("Please enter your name (one word only): ");
-//			String name = read.nextLine();
 			try (FileWriter writer = new FileWriter("C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Scores.txt", true)) {
 				writer.write(this.userName + "\n" + this.correct + "\n");
 			}catch (IOException e){
@@ -512,12 +507,12 @@ public class Country{
 		
 		Scanner read = new Scanner(System.in);
 		austen.userName = read.nextLine();
-		read.close();
 		
 		System.out.println("Here are the saved scores of all players. Try to beat them!");
 		austen.printHighScores();
 		
-		austen.run();
+		austen.run(read);
+		read.close();
 
 		String thanksForPlaying = "Thank you for visiting us! We hope you come back soon.";
 		System.out.println(thanksForPlaying);
@@ -556,5 +551,12 @@ public class Country{
 	public void setScores(HashMap<String, Integer> scores) {
 		this.scores = scores;
 	}
-
+	public void setState(State state) {
+		this.state = state;
+		
+	}
+	public State getState() {
+		return this.state;
+		
+	}
 }

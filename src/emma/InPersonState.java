@@ -16,22 +16,15 @@ public class InPersonState implements State {
 
 	@Override
 	public void entersExit() {
-		// TODO Auto-generated method stub
+		country.setState(country.gameOver);
 
 	}
 
 	@Override
-	public void entersAnswer() {
+	public void entersOther(String text) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void entersPlace() {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	public Country getCountry() {
 		return country;
@@ -41,5 +34,20 @@ public class InPersonState implements State {
 	public void setCountry(Country country) {
 		this.country = country;
 	}
+
+	@Override
+	public void setPlace(String text) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public Object getPlace() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }

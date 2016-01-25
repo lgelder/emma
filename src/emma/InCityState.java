@@ -2,6 +2,7 @@ package emma;
 
 public class InCityState implements State{
 	private Country country;
+	private String city;
 	
 	public InCityState(Country me){
 		this.country = me;
@@ -16,22 +17,15 @@ public class InCityState implements State{
 
 	@Override
 	public void entersExit() {
-		// TODO Auto-generated method stub
+		country.setState(country.gameOver);
 
 	}
 
 	@Override
-	public void entersAnswer() {
+	public void entersOther(String text) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void entersPlace() {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	public Country getCountry() {
 		return country;
@@ -41,5 +35,18 @@ public class InCityState implements State{
 	public void setCountry(Country country) {
 		this.country = country;
 	}
+
+	@Override
+	public void setPlace(String text) {
+		this.city = text;
+	}
+
+
+	@Override
+	public Object getPlace() {
+		return this.city;
+	}
+
+
 
 }

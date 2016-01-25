@@ -1,27 +1,26 @@
 package emma;
 
-public class GameOverState implements State {
+public class InCountryState implements State {
 	private Country country;
 	
-	public GameOverState(Country me){
+	public InCountryState(Country me){
 		this.country = me;
 	}
-	
 
 	@Override
 	public void entersBack() {
-		// TODO Auto-generated method stub
-
+		country.setState(country.gameOver);
 	}
 
 	@Override
 	public void entersExit() {
-		System.out.println("Can't exit from gameOver");
+		country.setState(country.gameOver);
 	}
+
 	@Override
 	public void entersOther(String text) {
-		// TODO Auto-generated method stub
-		
+		country.inCity.setPlace(text);
+		country.setState(country.inCity);
 	}
 	
 	public Country getCountry() {
@@ -33,20 +32,18 @@ public class GameOverState implements State {
 		this.country = country;
 	}
 
+
 	@Override
 	public void setPlace(String text) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("can't assign a place to a country");
 	}
 
 
 	@Override
 	public Object getPlace() {
-		// TODO Auto-generated method stub
+		System.out.println("a country doesn't have a place");
 		return null;
 	}
-
-
 
 
 
