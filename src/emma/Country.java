@@ -7,18 +7,34 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class Austenia{
+public class Country{
 	private List<City> cl;
 	private Boolean completed;
 	private int correct;
 	private HashMap<String, Integer> scores;
 	private String userName;
+	protected State state;
+	protected State inGame;
+	protected State inCity;
+	protected State inEstate;
+	protected State inPerson;
+	protected State inActivity;
+	protected State gameOver;
+	protected State saving;
 	
 	// Constructor. Maybe add another activity type and file later
-	public Austenia(String cityFile, String estateFile, String personFile, String activityFile1, 
+	public Country(String cityFile, String estateFile, String personFile, String activityFile1, 
 			String activityFile2, String activityFile3, String scoreFile){
 		System.out.println("Setting up the game.");
-		System.out.print("Creating Cities...");
+		System.out.print("Creating 'States'...");
+		this.inGame = new InGameState(this);
+		this.inCity = new InCityState(this);
+		this.inEstate = new InEstateState(this);
+		this.inPerson = new InPersonState(this);
+		this.inActivity = new InActivityState(this);
+		this.gameOver = new GameOverState(this);
+		this.saving = new SavingState(this);
+		System.out.print("Created 'States.' \nCreating Cities...");
 		cl = createCities(cityFile);
 		System.out.print("Created Cities. \nCreating Estates...");
 		createEstates(estateFile);
@@ -475,7 +491,7 @@ public class Austenia{
 	}
 	
 	public static void main(String[] a){
-		Austenia austen = new Austenia(
+		Country austen = new Country(
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Cities.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Estates.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\People.txt", 

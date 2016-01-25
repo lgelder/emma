@@ -1,11 +1,13 @@
 package emma;
 
 public class GameOverState implements State {
-
-	public GameOverState(){
-		
+	private Country country;
+	
+	public GameOverState(Country me){
+		this.country = me;
 	}
 	
+
 	@Override
 	public void entersBack() {
 		// TODO Auto-generated method stub
@@ -19,9 +21,26 @@ public class GameOverState implements State {
 	}
 
 	@Override
-	public void entersText() {
+	public void entersAnswer() {
 		// TODO Auto-generated method stub
-
+		
 	}
+
+	@Override
+	public void entersPlace() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public Country getCountry() {
+		return country;
+	}
+
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
 
 }

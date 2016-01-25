@@ -1,19 +1,45 @@
 package emma;
 
 public class InEstateState implements State {
-	protected Estate estate;
+	private Country country;
 	
-	public InEstateState(Estate estate){
-		this.estate = estate;
+	public InEstateState(Country me){
+		this.country = me;
 	}
 	
-	public void entersBack(){
+
+	@Override
+	public void entersBack() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void entersExit() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void entersAnswer() {
+		// TODO Auto-generated method stub
 		
 	}
-	public void entersExit(){
+
+	@Override
+	public void entersPlace() {
+		// TODO Auto-generated method stub
 		
 	}
-	public void entersText(){
-		
+
+
+	public Country getCountry() {
+		return country;
 	}
+
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
 }
