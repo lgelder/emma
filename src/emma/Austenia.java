@@ -12,6 +12,7 @@ public class Austenia{
 	private Boolean completed;
 	private int correct;
 	private HashMap<String, Integer> scores;
+	private String userName;
 	
 	// Constructor. Add another activity type and file later
 	public Austenia(String cityFile, String estateFile, String personFile, String activityFile1, 
@@ -293,10 +294,14 @@ public class Austenia{
 			String line = null;
 			line = bufferedReader.readLine();
 			while (line != null){
-				String[] items = line.split("\\s+");
-				String name = items[0];
-				int score = Integer.parseInt(items[1]);
-				scores.put(name, score);
+				String name = line;
+				String strScore = bufferedReader.readLine();
+				int score = Integer.parseInt(strScore);
+				scores.put(name,  score);
+//				String[] items = line.split("\\s+");
+//				String name = items[0];
+//				int score = Integer.parseInt(items[1]);
+//				scores.put(name, score);
 				line = bufferedReader.readLine();
 
 			}
@@ -420,10 +425,10 @@ public class Austenia{
 	
 	public void saveScore(Scanner read, String keep){
 		if (keep.startsWith("y")){
-			System.out.print("Please enter your name (one word only): ");
-			String name = read.nextLine();
+//			System.out.print("Please enter your name (one word only): ");
+//			String name = read.nextLine();
 			try (FileWriter writer = new FileWriter("C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Scores.txt", true)) {
-				writer.write(name + "\t" + this.correct + "\n");
+				writer.write(this.userName + "\n" + this.correct + "\n");
 			}catch (IOException e){
 				e.printStackTrace();
 			}
@@ -495,14 +500,21 @@ public class Austenia{
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\CompleteTheQuote.txt", 
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Unscramble.txt",
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Scores.txt");
-		
+			
 		String welcome = "Welcome to 18th-century England!. Here you can visit cities and estates \n"
 				+ "from Jane Austen's novels and complete activities given to you by various \n"
 				+ "characters.  You can enter your choices and answers by typing them, and \n"
 				+ "can type 'back' to go up a level (leave an estate, etc) at any time. (Leaving \n"
 				+ "the country takes you out of the game.) We hope you enjoy your time here!";
 		System.out.println(welcome);
-		System.out.println("Here are the current scores of all players. Try to beat them!");
+		
+		String getName = "Please enter your name: ";
+		System.out.println(getName);
+		
+		Scanner read = new Scanner(System.in);
+		austen.userName = read.nextLine();
+		
+		System.out.println("Here are the saved scores of all players. Try to beat them!");
 		austen.printHighScores();
 		
 		austen.run();
