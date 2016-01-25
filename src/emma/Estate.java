@@ -12,9 +12,9 @@ public class Estate {
 	private Boolean completed;
 	private List<Person> people;
 	
-	public Estate(String name, City city, Boolean completed){
+	public Estate(String name, Boolean completed){
 		this.name = name;
-		this.city = city;
+//		this.city = city;
 		this.completed = completed;
 		people = new ArrayList<Person>();
 	}

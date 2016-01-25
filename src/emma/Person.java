@@ -11,9 +11,9 @@ public class Person {
 	private Boolean completed;
 	private List<Activity> activities;
 	
-	public Person(String name, Estate estate, Boolean completed){
+	public Person(String name, Boolean completed){
 		this.name = name;
-		this.estate = estate;
+//		this.estate = estate;
 		this.completed = completed;
 		this.activities = new ArrayList<Activity>();
 	}

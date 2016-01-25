@@ -8,24 +8,24 @@ import java.util.Scanner;
 
 
 public class Austenia{
-	private static List<City> cl;
+	private List<City> cl;
 	private Boolean completed;
 	private int correct;
 	private HashMap<String, Integer> scores;
 	private String userName;
 	
-	// Constructor. Add another activity type and file later
+	// Constructor. Maybe add another activity type and file later
 	public Austenia(String cityFile, String estateFile, String personFile, String activityFile1, 
 			String activityFile2, String activityFile3, String scoreFile){
 		System.out.println("Setting up the game.");
 		System.out.print("Creating Cities...");
 		cl = createCities(cityFile);
 		System.out.print("Created Cities. \nCreating Estates...");
-		createEstates(cl, estateFile);
+		createEstates(estateFile);
 		System.out.print("Created Estates. \nCreating People...");
-//		createPeople(cl, personFile);
+		createPeople(personFile);
 		System.out.print("Created People. \nCreating Activities...");
-//		creatActivities(cl, activityFile1, activityFile2, activityFile3);
+		createActivities(activityFile1, activityFile2, activityFile3);
 		System.out.print("Created Activities. \nImporting scores...");
 		setScores(createHighScores(scoreFile));
 		System.out.print("Scores Imported.\n");
@@ -59,7 +59,7 @@ public class Austenia{
 	    return true;
 	}
 	
-	public static List<City> createCities(String file){
+	public List<City> createCities(String file){
 		List<City> cityList = new ArrayList<City>();
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -81,7 +81,7 @@ public class Austenia{
 		return cityList;
 	}
 	
-	public static void createEstates(List<City> cl, String file){
+	public void createEstates(String file){
 		List<Estate> listOfEstates = new ArrayList<Estate>();
 		try {
 	        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -92,8 +92,9 @@ public class Austenia{
 	        	while(!isWhitespace(line) && line != null){
 	        		String name = line;
 	        		String cityName = bufferedReader.readLine();
-	        		City city = findCity(cityName);
-	        		Estate e = new Estate(name, city, false);
+	        		City city = this.findCity(cityName);
+	        		Estate e = new Estate(name, false);
+	        		e.setCity(city);
 	        		listOfEstates.add(e);
 	        		line = bufferedReader.readLine();
 	        	}
@@ -113,249 +114,160 @@ public class Austenia{
             // Or we could just do this: 
 //	             ex.printStackTrace();
         }
-//		for (int p = 0; p < plist.size(); p++){
-//			for (int e = 0; e < listOfEstates.size(); e++){
-//				if (plist.get(p).getEstate().equals(listOfEstates.get(e).getName())){
-//					listOfEstates.get(e).addPerson(plist.get(p));
-//						System.out.println("added " + plist.get(p).getName() + " to " + listOfEstates.get(e).getName());
-//
-//					}
-//				}
-//			}
-			System.out.print("added people to estates...");
-
+		for (City c : this.cl){
+			for (Estate e : listOfEstates){
+				if (c == e.getCity()){
+					c.addEstate(e);
+				}
+			}
+			System.out.print("added estates to cities...");
+		}
 	}
 	
-//	public static List<Activity> createActivities(String tqFile, String ctqFile, String usFile){
-//		List<Activity> listOfActivities = new ArrayList<Activity>();
-//		try {
-//			FileReader fileReader = new FileReader(tqFile);
-//	        // wrap FileReader in BufferedReader.
-//	        BufferedReader bufferedReader = new BufferedReader(fileReader);
-//			// Read TriviaQuestions
-//            String line = bufferedReader.readLine();
-//            while(line != null) {
-//            	line = bufferedReader.readLine();
-//            	while(!isWhitespace(line) && line != null){
-//            		String title = line;
-//            		String question = bufferedReader.readLine();
-//            		String answer = bufferedReader.readLine();
-//            		List<String> choices = new ArrayList<String>();
-//            		String choice = bufferedReader.readLine();
-//            		while(!isWhitespace(choice) && choice != null){
-//                		choices.add(choice);
-//                		choice = bufferedReader.readLine();
-//            		}
-//            		line = choice;
-//            		List<Option> lo = createOptions(choices);
-//            		Activity a = new TriviaQuestion(title, question, answer, lo);
-//            		listOfActivities.add(a);
-//            	}
-//            }   
-//    		System.out.print("added trivia questions...");
-//            bufferedReader.close();   
-//            
-//            // Read CompleteTheQuotes
-////            BufferedReader bufferedReader2 = Files.newBufferedReader(CTQFile, charset);
-//			FileReader fileReader2 = new FileReader(ctqFile);
-//	        // wrap FileReader in BufferedReader.
-//	        BufferedReader bufferedReader2 = new BufferedReader(fileReader2);
-//            String line3 = bufferedReader2.readLine();
-//            while(line3 != null) {
-//                line3 = bufferedReader2.readLine();
-//            	while(!isWhitespace(line3) && line3 != null){
-//            		String title = line3;
-//            		String question = bufferedReader2.readLine();
-//            		String answer = bufferedReader2.readLine();
-//            		List<String> choices = new ArrayList<String>();
-//            		String choice = bufferedReader2.readLine();
-//            		while(!isWhitespace(choice) && choice != null){
-//                		choices.add(choice);
-//                		choice = bufferedReader2.readLine();
-//            		}
-//            		line3 = choice;
-//            		List<Option> lo = createOptions(choices);
-//            		Activity a = new CompleteTheQuote(title, question, answer, lo);
-//            		listOfActivities.add(a);
-//            	}
-//            }
-//    		System.out.print("added complete the quotes...");
-//            bufferedReader2.close(); 
-//
-//            // Read Unscrambles
-////            BufferedReader bufferedReader3 = Files.newBufferedReader(USFile, charset);
-//			FileReader fileReader3 = new FileReader(usFile);
-//	        // wrap FileReader in BufferedReader.
-//	        BufferedReader bufferedReader3 = new BufferedReader(fileReader3);
-//            String line5 = null;
-//            line5 = bufferedReader3.readLine();
-//            while(line5 != null) {
-//            	line5 = bufferedReader3.readLine();
-//            	while(!isWhitespace(line5) && line5 != null){
-//            		String title = line5;
-//            		String phrase = bufferedReader3.readLine();
-//            		String scrambled = bufferedReader3.readLine();
-//            		Activity a = new Unscramble(title, phrase, scrambled);
-//            		listOfActivities.add(a);
-//            		line5 = bufferedReader3.readLine();
-//            	}
-//            }   
-//    		System.out.print("added unscrambles...");
-//            bufferedReader3.close(); 
-//        }
-//        catch(FileNotFoundException ex) {
-//            System.out.println(
-//                "Unable to open file");                
-//        }
-//        catch(IOException ex) {
-//            System.out.println(
-//                "Error reading file");                  
-//            // Or we could just do this: 
-////             ex.printStackTrace();
-//        }
-//		// Test that activities were created correctly
-////		for (int i = 0; i < listOfActivities.size(); i++){
-////			System.out.println(listOfActivities.get(i).getPrintQuestion());
-////		}
-//		return listOfActivities;
-//	}
-//	
-//	public static List<Person> createPeople(List<Activity> actList, String file){
-//		List<Person> listOfPeople = new ArrayList<Person>();
-//		try {
-//			FileReader fileReader = new FileReader(file);
-//	        // wrap FileReader in BufferedReader.
-//	        BufferedReader bufferedReader = new BufferedReader(fileReader);
-//	        String line5 = null;
-//	        line5 = bufferedReader.readLine();
-//	        while(line5 != null) {
-//	        	line5 = bufferedReader.readLine();
-//	        	while(!isWhitespace(line5) && line5 != null){
-//	        		String name = line5;
-//	        		String estate = bufferedReader.readLine();
-//	        		Person p = new Person(name, estate, false);
-//	        		listOfPeople.add(p);
-//	        		line5 = bufferedReader.readLine();
-//	        	}
-//	        }   
-//	        System.out.print("created people...");
-//	        bufferedReader.close(); }
-//
-//        catch(FileNotFoundException ex) {
-//            System.out.println(
-//                "Unable to open file '" + 
-//                file + "'");                
-//        }
-//        catch(IOException ex) {
-//            System.out.println(
-//                "Error reading file '" 
-//                + file + "'");                  
-//            // Or we could just do this: 
-////             ex.printStackTrace();
-//        }
-//		for (int a = 0; a < actList.size(); a++){
-//			for (int p = 0; p < listOfPeople.size(); p++){
-//				if (actList.get(a).getPerson().equals(listOfPeople.get(p).getName())){
-//					listOfPeople.get(p).addActivity(actList.get(a));
-////					System.out.println("added " + actList.get(a).getAnswer() + " to " + listOfPeople.get(p).getName());
-//				}
-//			}
+	public void createPeople(String file){
+		List<Person> listOfPeople = new ArrayList<Person>();
+		try {
+	        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+	        String line = null;
+	        line = bufferedReader.readLine();
+	        while(line != null) {
+	        	line = bufferedReader.readLine();
+	        	while(!isWhitespace(line) && line != null){
+	        		String name = line;
+	        		String estateName = bufferedReader.readLine();
+	        		Estate estate = findEstate(estateName);
+	        		Person p = new Person(name, false);
+	        		p.setEstate(estate);
+	        		listOfPeople.add(p);
+	        		line = bufferedReader.readLine();
+	        	}
+	        }   
+	        System.out.print("created people...");
+	        bufferedReader.close(); }
+
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                "Unable to open file '" + 
+                file + "'");                
+        }
+        catch(IOException ex) {
+            System.out.println(
+                "Error reading file '" 
+                + file + "'");                  
+            // Or we could just do this: 
+//             ex.printStackTrace();
+        }
+		for (City c : cl){
+			for (Estate e : c.getEstates()){
+				for (Person p : listOfPeople){
+					if (p.getEstate() == e){
+						e.addPerson(p);
+					}
+				}
+			}
+		}
+		System.out.print("added people to estates...");
+	}
+	
+	public void createActivities(String tqFile, String ctqFile, String usFile){
+		List<Activity> listOfActivities = new ArrayList<Activity>();
+		try {
+	        BufferedReader bufferedReader = new BufferedReader(new FileReader(tqFile));
+			// Read TriviaQuestions
+            String line = bufferedReader.readLine();
+            while(line != null) {
+            	line = bufferedReader.readLine();
+            	while(!isWhitespace(line) && line != null){
+            		String personName = line;
+            		String question = bufferedReader.readLine();
+            		String answer = bufferedReader.readLine();
+            		List<String> choices = new ArrayList<String>();
+            		String choice = bufferedReader.readLine();
+            		while(!isWhitespace(choice) && choice != null){
+                		choices.add(choice);
+                		choice = bufferedReader.readLine();
+            		}
+            		line = choice;
+            		List<Option> lo = createOptions(choices);
+            		Person person = findPerson(personName);
+            		Activity a = new TriviaQuestion(person, question, answer, lo);
+            		listOfActivities.add(a);
+            	}
+            }   
+    		System.out.print("added trivia questions...");
+            bufferedReader.close();   
+            
+            // Read CompleteTheQuotes
+	        BufferedReader bufferedReader2 = new BufferedReader(new FileReader(ctqFile));
+            String line2 = bufferedReader2.readLine();
+            while(line2 != null) {
+                line2 = bufferedReader2.readLine();
+            	while(!isWhitespace(line2) && line2 != null){
+            		String personName = line2;
+            		String question = bufferedReader2.readLine();
+            		String answer = bufferedReader2.readLine();
+            		List<String> choices = new ArrayList<String>();
+            		String choice = bufferedReader2.readLine();
+            		while(!isWhitespace(choice) && choice != null){
+                		choices.add(choice);
+                		choice = bufferedReader2.readLine();
+            		}
+            		line2 = choice;
+            		List<Option> lo = createOptions(choices);
+            		Person person = findPerson(personName);
+            		Activity a = new CompleteTheQuote(person, question, answer, lo);
+            		listOfActivities.add(a);
+            	}
+            }
+    		System.out.print("added complete the quotes...");
+            bufferedReader2.close(); 
+
+            // Read Unscrambles
+	        BufferedReader bufferedReader3 = new BufferedReader(new FileReader(usFile));
+            String line3 = null;
+            line3 = bufferedReader3.readLine();
+            while(line3 != null) {
+            	line3 = bufferedReader3.readLine();
+            	while(!isWhitespace(line3) && line3 != null){
+            		String personName = line3;
+            		String phrase = bufferedReader3.readLine();
+            		String scrambled = bufferedReader3.readLine();
+            		Person person = findPerson(personName);
+            		Activity a = new Unscramble(person, phrase, scrambled);
+            		listOfActivities.add(a);
+            		line3 = bufferedReader3.readLine();
+            	}
+            }   
+    		System.out.print("added unscrambles...");
+            bufferedReader3.close(); 
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                "Unable to open file");                
+        }
+        catch(IOException ex) {
+            System.out.println(
+                "Error reading file");                  
+            // Or we could just do this: 
+//             ex.printStackTrace();
+        }
+		// Test that activities were created correctly
+//		for (int i = 0; i < listOfActivities.size(); i++){
+//			System.out.println(listOfActivities.get(i).getPrintQuestion());
 //		}
-//		System.out.print("added activities to people...");
-//		return listOfPeople;
-//	}	
-//
-//	public static List<Estate> createEstates(List<Person> plist, String file){
-//		List<Estate> listOfEstates = new ArrayList<Estate>();
-//		try {
-//			FileReader fileReader = new FileReader(file);
-//	        // wrap FileReader in BufferedReader.
-//	        BufferedReader bufferedReader = new BufferedReader(fileReader);
-//	        String line5 = null;
-//	        line5 = bufferedReader.readLine();
-//	        while(line5 != null) {
-//	        	line5 = bufferedReader.readLine();
-//	        	while(!isWhitespace(line5) && line5 != null){
-//	        		String name = line5;
-//	        		String city = bufferedReader.readLine();
-//	        		Estate e = new Estate(name, city, false);
-//	        		listOfEstates.add(e);
-//	        		line5 = bufferedReader.readLine();
-//	        	}
-//	        }   
-//	        System.out.print("created estates...");
-//	        bufferedReader.close(); }
-//
-//        catch(FileNotFoundException ex) {
-//            System.out.println(
-//                "Unable to open file '" + 
-//                file + "'");                
-//        }
-//        catch(IOException ex) {
-//            System.out.println(
-//                "Error reading file '" 
-//                + file + "'");                  
-//            // Or we could just do this: 
-////             ex.printStackTrace();
-//        }
-//		for (int p = 0; p < plist.size(); p++){
-//			for (int e = 0; e < listOfEstates.size(); e++){
-//				if (plist.get(p).getEstate().equals(listOfEstates.get(e).getName())){
-//					listOfEstates.get(e).addPerson(plist.get(p));
-////					System.out.println("added " + plist.get(p).getName() + " to " + listOfEstates.get(e).getName());
-//
-//				}
-//			}
-//		}
-//		System.out.print("added people to estates...");
-//		return listOfEstates;
-//	}
-//	
-//	public static List<City> createCities(List<Estate> elist, String file){
-//		List<City> listOfCities = new ArrayList<City>();
-//		try {
-//			FileReader fileReader = new FileReader(file);
-//	        // wrap FileReader in BufferedReader.
-//	        BufferedReader bufferedReader = new BufferedReader(fileReader);
-//	        String line5 = null;
-//	        line5 = bufferedReader.readLine();
-//	        while(line5 != null) {
-//	        	line5 = bufferedReader.readLine();
-//	        	while(!isWhitespace(line5) && line5 != null){
-//	        		String name = line5;
-//	        		City c = new City(name, false);
-//	        		listOfCities.add(c);
-//	        		line5 = bufferedReader.readLine();
-//	        	}
-//	        }   
-//	        System.out.print("created cities...");
-//
-//	        bufferedReader.close(); }
-//		
-//        catch(FileNotFoundException ex) {
-//            System.out.println(
-//                "Unable to open file '" + 
-//                file + "'");                
-//        }
-//        catch(IOException ex) {
-//            System.out.println(
-//                "Error reading file '" 
-//                + file + "'");                  
-//            // Or we could just do this: 
-////             ex.printStackTrace();
-//        }
-//		for (int e = 0; e < elist.size(); e++){
-//			for (int c = 0; c < listOfCities.size(); c++){
-//				if (elist.get(e).getCity().equals(listOfCities.get(c).getName())){
-//					listOfCities.get(c).addEstate(elist.get(e));
-////					System.out.println("added " + elist.get(e).getName() + " to " + listOfCities.get(c).getName());
-//
-//				}
-//			}
-//		}
-//		System.out.print("added estates to cities...");
-//		return listOfCities;
-//	}
+		for (City c : cl){
+			for (Estate e : c.getEstates()){
+				for (Person p : e.getPeople()){
+					for (Activity a : listOfActivities){
+						if (a.getPerson() == p){
+							p.addActivity(a);
+						}
+					}
+				}
+			}
+		}
+		System.out.print("added activities to people...");
+	}
 	
 	public static List<Option> createOptions(List<String> list){
 		List<Option> questionchoices = new ArrayList<Option>();
@@ -400,17 +312,17 @@ public class Austenia{
 	
 	public Estate userInputEstate(Scanner read, City city){
 		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-		Estate estate = findEstate(city, selection);
+		Estate estate = findEstate(selection);
 		return estate;
 	}
 	
 	public Person userInputPerson(Scanner read, Estate estate){
 		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-		Person person = findPerson(estate, selection);
+		Person person = findPerson(selection);
 		return person;
 	}
 	
-	public void run(){
+	public void run2(){
 		Scanner read = new Scanner(System.in);
 		String selection = "";
 		while (!getCompleted() && !selection.equals("exit")){
@@ -525,49 +437,35 @@ public class Austenia{
 		return cities;
 	}
 	
-	public static City findCity(String city){ //turn these into factories????
-		if (city.equals("back")){
-			return new City("back", true);
-		}
-//		if (city.equals("exit")){
-//			return new City("exit", true);		
-//		}
+	public City findCity(String city){ //turn these into factories????
 		for (City c : cl){
-			if ((c.getCompleted().equals(false)) && (c.getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(city)){  
+			if (c.getName().equals(city)){  
 	        	return c;
 	        }
 		}
 		return new City("null", true);
 	}
 
-	public Estate findEstate(City city, String estate){
-		if (estate.equals("back")){
-			return new Estate("back", city, true);
+	public Estate findEstate(String estate){
+		for (City c : cl){
+			for (Estate e : c.getEstates()){
+				if (e.getName().equals(estate));
+			}
 		}
-//		if (estate.equals("exit")){
-//			return new Estate("exit", city.getName(), true);
-//		}
-		for (Estate e : city.getEstates()){
-			if ((e.getCompleted().equals(false)) && (e.getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(estate)){  
-	        	return e;
-	        }
-		}
-		return new Estate("null", city, true);
+		return new Estate("null", true);
 	}
 	
-	public Person findPerson(Estate estate, String person){
-		if (person.equals("back")){
-			return new Person("back", estate, true);
+	public Person findPerson(String person){
+		for (City c : cl){
+			for (Estate e : c.getEstates()){
+				for (Person p : e.getPeople()){
+					if (p.getEstate().equals(e)){
+						return p;
+					}
+				}
+			}
 		}
-//		if (person.equals("exit")){
-//			return new Person("exit", estate.getName(), true);
-//		}
-		for (Person p : estate.getPeople()){
-			if ((p.getCompleted().equals(false)) && (p.getName()).replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(person)){  
-	        	return p;
-	        }
-		}
-		return new Person("null", estate, true);
+		return new Person("null", true);
 	}
 	
 	public static void main(String[] a){
@@ -618,7 +516,6 @@ public class Austenia{
 			System.out.println("Sorry, that's incorrect.\n");
 		}
 	}
-
 	public Boolean getCompleted() {
 		return completed;
 	}
