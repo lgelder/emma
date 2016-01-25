@@ -414,6 +414,12 @@ public class Austenia{
 		read.close();
 	}
 	
+	public void run(){
+		
+		
+		
+	}
+	
 	public void saveScore(Scanner read, String keep){
 		if (keep.startsWith("y")){
 //			System.out.print("Please enter your name (one word only): ");
