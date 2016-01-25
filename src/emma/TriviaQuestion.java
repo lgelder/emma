@@ -1,67 +1,54 @@
 package emma;
 
-public class TriviaQuestion {
-	private String title;
-	private String description;
-	private Boolean completed;
+import java.util.List;
+
+public class TriviaQuestion extends Activity implements ActivityInterface{
 	private String question;
 	private String answer;
-	private String[] choices;
+	private List<Option> choices;
 	
-	public TriviaQuestion(String title, String description, String question, String answer, String[] choices){
-		this.title = title;
-		this.description = description;
+	public TriviaQuestion(String person, String question, String answer, List<Option> choices){
+		this.person = person;
 		this.completed = false;
+		this.instructions = "Enter your answer in word format: \n";
 		this.question = question;
 		this.answer = answer;
 		this.choices = choices;
 	}
-	
-	public String getDescription() {
-		return description;
+	public String getPrintQuestion(){
+		return getInstructions() + getQuestion() + "\n" + getStringChoices();
 	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public Boolean getCompleted() {
-		return completed;
-	}
-	public void setCompleted(Boolean completed) {
-		this.completed = completed;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
+
 	public String getQuestion() {
 		return question;
 	}
-
 	public void setQuestion(String question) {
 		this.question = question;
 	}
-
 	public String getAnswer() {
 		return answer;
 	}
-
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-
-	public String getChoices() {
+	public String getStringChoices() {
 		String string = "";
-		for (int i = 0; i < 3; i++) {
-			string += choices[i] + "\n";
+		for (int i = 0; i < choices.size(); i++) {
+			string += choices.get(i).stringOption() + "\n";
 		}
 		return string;
 	}
-
-	public void setChoices(String[] choices) {
+	public List<Option> getChoices(){
+		return choices;
+	}
+	public void setChoices(List<Option> choices) {
 		this.choices = choices;
 	}
-
+	public Boolean checkAnswer(String a){
+		if (a.equals(getAnswer().replaceAll("[^a-zA-Z ]", "").toLowerCase())){
+			this.completed = true;
+			return true;
+		}
+		return false;
+	}
 }

@@ -1,0 +1,18 @@
+Person
+Mr. Woodhouse
+Hartfield
+
+Emma Woodhouse
+Hartfield
+
+Mrs. Elton
+The Parsonage
+
+Frank Churchill
+Randalls
+
+Mr. Knightley
+Donwell
+
+Mrs. Weston
+Randalls

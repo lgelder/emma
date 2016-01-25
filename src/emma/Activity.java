@@ -1,15 +1,15 @@
 package emma;
 
-public abstract class Activity {
-	private String title;
-	private String description;
-	private Boolean completed;
+public abstract class Activity implements ActivityInterface{
+	protected String person;
+	protected String instructions;
+	protected Boolean completed;
 	
-	public String getDescription() {
-		return description;
+	public String getInstructions() {
+		return instructions;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDescription(String instructions) {
+		this.instructions = instructions;
 	}
 	public Boolean getCompleted() {
 		return completed;
@@ -17,11 +17,11 @@ public abstract class Activity {
 	public void setCompleted(Boolean completed) {
 		this.completed = completed;
 	}
-	public String getTitle() {
-		return title;
+	public String getPerson() {
+		return person;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setPerson(String person) {
+		this.person = person;
 	}
 	
 }

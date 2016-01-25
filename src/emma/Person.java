@@ -1,15 +1,20 @@
 package emma;
 
+import java.util.*;
+
 //a non-playable character
 
-public class Person{
-	
+public class Person {
 	private String name;
-	private TriviaQuestion question;
+	private String estate;
+	private Boolean completed;
+	private List<Activity> activities;
 	
-	public Person(String name, TriviaQuestion question){
+	public Person(String name, String estate, Boolean completed){
 		this.name = name;
-		this.question = question;
+		this.estate = estate;
+		this.completed = completed;
+		this.activities = new ArrayList<Activity>();
 	}
 	
 	public String getName() {
@@ -18,13 +23,31 @@ public class Person{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public TriviaQuestion getTriviaQuestion() {
-		return question;
+	public Activity getActivity(int i) {
+		return activities.get(i);
 	}
-	public void setTriviaQuestion(TriviaQuestion question) {
-		this.question = question;
+	public void addActivity(Activity activity) {
+		this.activities.add(activity);
+	}
+
+	public String getEstate() {
+		return estate;
+	}
+
+	public void setEstate(String estate) {
+		this.estate = estate;
+	}
+
+	public Boolean getCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(Boolean completed) {
+		this.completed = completed;
 	}
 	
-	
+	public List<Activity> getActivities(){
+		return this.activities;
+	}
 	
 }
