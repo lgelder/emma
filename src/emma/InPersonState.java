@@ -2,7 +2,8 @@ package emma;
 
 public class InPersonState implements State {
 	private Country country;
-	
+	private String instructions;
+
 	public InPersonState(Country me){
 		this.country = me;
 	}
@@ -46,6 +47,20 @@ public class InPersonState implements State {
 	public Object getPlace() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public void setInstructions(String text) {
+		this.instructions = text;
+		
+	}
+
+
+	@Override
+	public String getInstructions() {
+		return this.instructions;
+
 	}
 
 

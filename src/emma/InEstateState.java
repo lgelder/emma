@@ -3,7 +3,8 @@ package emma;
 public class InEstateState implements State {
 	private Country country;
 	private Estate estate;
-	
+	private String instructions;
+
 	public InEstateState(Country me){
 		this.country = me;
 	}
@@ -48,13 +49,27 @@ public class InEstateState implements State {
 
 	@Override
 	public void setPlace(String text) {
-		// TODO Auto-generated method stub
+		this.instructions = text;
 		
 	}
 
 
 	@Override
 	public Object getPlace() {
+		return this.instructions;
+
+	}
+
+
+	@Override
+	public void setInstructions(String text) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public String getInstructions() {
 		// TODO Auto-generated method stub
 		return null;
 	}

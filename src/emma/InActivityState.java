@@ -2,7 +2,9 @@ package emma;
 
 public class InActivityState implements State{
 	private Country country;
-	
+	private Activity activity;
+	private String instructions;
+
 	public InActivityState(Country me){
 		this.country = me;
 	}
@@ -21,8 +23,9 @@ public class InActivityState implements State{
 	}
 	@Override
 	public void entersOther(String text) {
-		// TODO Auto-generated method stub
-		
+		if (text.equals(activity.getAnswer())){
+			
+		}
 	}
 
 
@@ -46,6 +49,20 @@ public class InActivityState implements State{
 	public Object getPlace() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public void setInstructions(String text) {
+		this.instructions = text;
+		
+	}
+
+
+	@Override
+	public String getInstructions() {
+		return this.instructions;
+
 	}
 
 

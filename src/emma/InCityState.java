@@ -3,7 +3,8 @@ package emma;
 public class InCityState implements State{
 	private Country country;
 	private String city;
-	
+	private String instructions;
+
 	public InCityState(Country me){
 		this.country = me;
 	}
@@ -45,6 +46,20 @@ public class InCityState implements State{
 	@Override
 	public Object getPlace() {
 		return this.city;
+	}
+
+
+	@Override
+	public void setInstructions(String text) {
+		this.instructions = text;
+		
+	}
+
+
+	@Override
+	public String getInstructions() {
+		return this.instructions;
+
 	}
 
 

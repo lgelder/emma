@@ -2,16 +2,15 @@ package emma;
 
 public class GameOverState implements State {
 	private Country country;
+	private String instructions;
 	
 	public GameOverState(Country me){
 		this.country = me;
 	}
-	
 
 	@Override
 	public void entersBack() {
-		// TODO Auto-generated method stub
-
+		System.out.println("Can't go back from gameOver");
 	}
 
 	@Override
@@ -20,8 +19,7 @@ public class GameOverState implements State {
 	}
 	@Override
 	public void entersOther(String text) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Can't enter text from gameOver state");
 	}
 	
 	public Country getCountry() {
@@ -35,15 +33,27 @@ public class GameOverState implements State {
 
 	@Override
 	public void setPlace(String text) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("gameOver can't have a place");
 	}
 
 
 	@Override
 	public Object getPlace() {
-		// TODO Auto-generated method stub
+		System.out.println("gameOver doesn't have a place");
 		return null;
+	}
+
+
+	@Override
+	public void setInstructions(String text) {
+		this.instructions = text;
+		
+	}
+
+
+	@Override
+	public String getInstructions() {
+		return this.instructions;
 	}
 
 

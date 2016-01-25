@@ -2,6 +2,7 @@ package emma;
 
 public class SavingState implements State {
 	private Country country;
+	private String instructions;
 	
 	public SavingState(Country me){
 		this.country = me;
@@ -47,6 +48,20 @@ public class SavingState implements State {
 	public Object getPlace() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public void setInstructions(String text) {
+		this.instructions = text;
+		
+	}
+
+
+	@Override
+	public String getInstructions() {
+		return this.instructions;
+
 	}
 
 

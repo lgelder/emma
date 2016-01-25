@@ -6,5 +6,7 @@ public interface State {
 	public void entersOther(String text);
 	public void setPlace(String text);
 	public Object getPlace();
+	public void setInstructions(String text);
+	public String getInstructions();
 	
 }

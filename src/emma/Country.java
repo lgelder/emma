@@ -27,14 +27,14 @@ public class Country{
 			String activityFile2, String activityFile3, String scoreFile){
 		System.out.println("Setting up the game.");
 		System.out.print("Creating 'States'...");
-		this.inGame = new InCountryState(this);
-		this.inCity = new InCityState(this);
-		this.inEstate = new InEstateState(this);
-		this.inPerson = new InPersonState(this);
-		this.inActivity = new InActivityState(this);
+//		this.inGame = new InCountryState(this);
+//		this.inCity = new InCityState(this);
+//		this.inEstate = new InEstateState(this);
+//		this.inPerson = new InPersonState(this);
+//		this.inActivity = new InActivityState(this);
 		this.gameOver = new GameOverState(this);
-		this.saving = new SavingState(this);
-		this.setState(inGame);
+//		this.saving = new SavingState(this);
+//		this.setState(inGame);
 		System.out.print("Created 'States.' \nCreating Cities...");
 		cl = createCities(cityFile);
 		System.out.print("Created Cities. \nCreating Estates...");
@@ -420,8 +420,10 @@ public class Country{
 	}
 	
 	public void run(Scanner read){
+		this.state = new InCountryState(this);
 		String userInput = null;
 		while (this.getState() != gameOver){
+			System.out.println(this.state.getInstructions());
 			userInput = read.nextLine();
 			if (userInput.equals("back")){
 				this.state.entersBack();
