@@ -7,7 +7,7 @@ public class CompleteTheQuote extends Activity implements ActivityInterface{
 	private String answer;
 	private List<Option> choices;
 	
-	public CompleteTheQuote(String person, String sentence, String answer, List<Option> choices){
+	public CompleteTheQuote(Person person, String sentence, String answer, List<Option> choices){
 		this.person = person;
 		this.completed = false;
 		this.instructions = "Enter the correct word/phrase to complete the quote: \n";

@@ -6,11 +6,12 @@ import java.util.*;
 
 public class Person {
 	private String name;
-	private String estate;
+//	private String estate;
+	private Estate estate;
 	private Boolean completed;
 	private List<Activity> activities;
 	
-	public Person(String name, String estate, Boolean completed){
+	public Person(String name, Estate estate, Boolean completed){
 		this.name = name;
 		this.estate = estate;
 		this.completed = completed;
@@ -30,14 +31,22 @@ public class Person {
 		this.activities.add(activity);
 	}
 
-	public String getEstate() {
+//	public String getEstate() {
+//		return estate;
+//	}
+//
+//	public void setEstate(String estate) {
+//		this.estate = estate;
+//	}
+
+	public Estate getEstate() {
 		return estate;
 	}
 
-	public void setEstate(String estate) {
+	public void setEstate(Estate estate) {
 		this.estate = estate;
 	}
-
+	
 	public Boolean getCompleted() {
 		return completed;
 	}

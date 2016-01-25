@@ -7,13 +7,14 @@ import java.util.List;
 
 public class Estate {
 	private String name;
-	private String city;
+//	private String city;
+	private City city;
 	private Boolean completed;
 	private List<Person> people;
 	
-	public Estate(String name, String city, Boolean completed){
+	public Estate(String name, City city, Boolean completed){
 		this.name = name;
-		this.setCity(city);
+		this.city = city;
 		this.completed = completed;
 		people = new ArrayList<Person>();
 	}
@@ -45,14 +46,22 @@ public class Estate {
 		this.name = name;
 	}
 
-	public String getCity() {
+//	public String getCity() {
+//		return city;
+//	}
+//
+//	public void setCity(String city) {
+//		this.city = city;
+//	}
+
+	public City getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(City city) {
 		this.city = city;
 	}
-
+	
 	public Boolean getCompleted() {
 		return completed;
 	}
