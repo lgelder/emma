@@ -27,7 +27,6 @@ public class Country{
 			String activityFile2, String activityFile3, String scoreFile){
 		System.out.println("Setting up the game.");
 		System.out.print("Creating 'States'...");
-
 		this.gameOver = new GameOverState(this);
 		System.out.print("Created 'States.' \nCreating Cities...");
 		cl = createCities(cityFile);
