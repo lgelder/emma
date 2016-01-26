@@ -13,10 +13,10 @@ public class InCityState implements State{
 		this.city = city;
 		this.ecounter = ecounter;
 		this.ccounter = ccounter;
-		if (this.ecounter == this.city.getInsidePlaces().size()){
-			this.city.setCompleted(true);
-			this.country.setState(new InCountryState(this.country, this.ccounter));
-		}
+//		if (this.ecounter == this.city.getInsidePlaces().size()){
+//			this.city.setCompleted(true);
+//			this.country.setState(new InCountryState(this.country, this.ccounter));
+//		}
 		this.setInstructions("\nWelcome to " + this.city.getName() + ", " + this.country.getUserName() 
 		+ "! Please select an estate to visit from the \nfollowing list:" + this.city.getUncompletedPrintPlaces());
 	}
