@@ -3,21 +3,27 @@ package emma;
 
 public class InActivityState implements State{
 	private Country country;
+	private Place city;
+	private Place estate;
 	private Place person;
 	private Activity activity;
 	private String instructions;
+	private int counter;
 	
-	public InActivityState(Country me, Place person, Activity activity){
+	public InActivityState(Country me, Place city, Place estate, Place person, Activity activity, int counter){
 		this.country = me;
+		this.city = city;
+		this.estate = estate;
 		this.person = person;
 		this.activity = activity;
+		this.counter = counter;
 		this.setInstructions(this.activity.getPrintQuestion());
 
 	}
 	
 	@Override
 	public void entersBack() {
-		this.country.setState(new InPersonState(this.country, this.person));
+		this.country.setState(new InPersonState(this.country, this.city, this.estate, this.person, this.counter));
 	}
 
 	@Override
@@ -34,7 +40,8 @@ public class InActivityState implements State{
 			this.country.setCorrect(this.country.getCorrect() + 1);
 			this.activity.setCompleted(true);
 		}
-		this.country.setState(new InPersonState(this.country, this.person));
+		this.counter++;
+		this.country.setState(new InPersonState(this.country, this.city, this.estate, this.person, this.counter));
 	}
 
 

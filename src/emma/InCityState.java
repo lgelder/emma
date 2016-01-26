@@ -27,7 +27,7 @@ public class InCityState implements State{
 	public void entersOther(String text) {
 		Place estate = this.country.findEstate(text);
 		if (!estate.getName().equals("null")){
-			this.country.setState(new InEstateState(this.country, estate));
+			this.country.setState(new InEstateState(this.country, this.city, estate));
 		} else {
 			System.out.println(text + " is not an estate from the list. Please choose again.");
 		}		

@@ -5,15 +5,19 @@ import java.util.List;
 
 public class InPersonState implements State {
 	private Country country;
+	private Place city;
+	private Place estate;
 	private Place person;
 	private String instructions;
 	private List<Activity> listOfAs;
 	private int counter;
 	
-	public InPersonState(Country me, Place person){
+	public InPersonState(Country me, Place city, Place estate, Place person, int count){
 		this.country = me;
+		this.city = city;
+		this.estate = estate;
 		this.person = person;
-		this.setCounter(0);
+		this.setCounter(count);
 
 		this.setInstructions("Hello, " + this.country.getUserName() + "! Would you like to attempt an activity?");
 		this.listOfAs = new ArrayList<Activity>();
@@ -27,7 +31,7 @@ public class InPersonState implements State {
 
 	@Override
 	public void entersBack() {
-		this.country.setState(new InEstateState(this.country, this.person.getContainerPlace()));
+		this.country.setState(new InEstateState(this.country, this.city, this.estate));
 
 	}
 
@@ -39,13 +43,13 @@ public class InPersonState implements State {
 
 	@Override
 	public void entersOther(String text) {
-		if (text.startsWith("y")){
-			this.country.setState(new InActivityState(this.country, this.person, this.listOfAs.get(counter)));
+		if (text.replaceAll("[^a-zA-Z ]", "").toLowerCase().startsWith("y")){
+			this.country.setState(new InActivityState(this.country, this.city, this.estate, this.person, this.listOfAs.get(counter), this.counter));
 		}else {
 			System.out.println("Thank you for talking with me " + this.country.getUserName() + ". I hope you come again!");
-			this.country.setState(new InEstateState(this.country, this.person.getContainerPlace()));
+			this.country.setState(new InEstateState(this.country, this.city, this.estate));
 		}
-		this.listOfAs.get(this.counter).setCompleted(true);
+		this.person.getInsidePlaces().get(this.counter).setCompleted(true);
 		this.counter++;
 	}
 

@@ -2,11 +2,13 @@ package emma;
 
 public class InEstateState implements State {
 	private Country country;
+	private Place city;
 	private Place estate;
 	private String instructions;
 
-	public InEstateState(Country me, Place estate){
+	public InEstateState(Country me, Place city, Place estate){
 		this.country = me;
+		this.city = city;
 		this.estate = estate;
 		this.setInstructions("\nWelcome to " + this.estate.getName() + ", " + this.country.getUserName() 
 		+ "! Please select a person to interact with from the \nfollowing list:" + this.estate.getUncompletedPrintPlaces());
@@ -15,7 +17,7 @@ public class InEstateState implements State {
 	
 	@Override
 	public void entersBack() {
-		this.country.setState(new InCityState(this.country, this.estate.getContainerPlace()));
+		this.country.setState(new InCityState(this.country, this.city));
 	}
 
 	@Override
@@ -28,7 +30,7 @@ public class InEstateState implements State {
 	public void entersOther(String text) {
 		Place person = this.country.findPerson(text);
 		if (!person.getName().equals("null")){
-			this.country.setState(new InPersonState(country, person));
+			this.country.setState(new InPersonState(this.country, this.city, this.estate, person, 0));
 		} else {
 			System.out.println(text + " is not a person from the list. Please choose again.");
 		}			
