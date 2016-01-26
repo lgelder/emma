@@ -1,7 +1,5 @@
 package emma;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class InActivityState implements State{
 	private Country country;
@@ -13,38 +11,35 @@ public class InActivityState implements State{
 		this.country = me;
 		this.person = person;
 		this.activity = activity;
-		this.setInstructions(activity.getPrintQuestion());
+		this.setInstructions(this.activity.getPrintQuestion());
 
 	}
 	
 	@Override
 	public void entersBack() {
-		country.setState(new InPersonState(country, person));
+		this.country.setState(new InPersonState(this.country, this.person));
 	}
 
 	@Override
 	public void entersExit() {
-		country.setState(country.gameOver);
+		this.country.setState(this.country.gameOver);
 
 	}
 	@Override
-	public void entersOther(String text) {
-//		Activity a = listOfAs.get(counter);
-//		if (!a.getCompleted()){
-//			System.out.println(a.getPrintQuestion());
-//		}
+	public void entersOther(String text){
 		String selection = text.replaceAll("[^a-zA-Z ]", "").toLowerCase();
 		Boolean answer = this.activity.checkAnswer(selection);
 		Country.interpretAnswer(answer);
 		if (answer){
-			country.setCorrect(country.getCorrect() + 1);
+			this.country.setCorrect(this.country.getCorrect() + 1);
+			this.activity.setCompleted(true);
 		}
-		country.setState(new InPersonState(country, person));
+		this.country.setState(new InPersonState(this.country, this.person));
 	}
 
 
 	public Country getCountry() {
-		return country;
+		return this.country;
 	}
 
 

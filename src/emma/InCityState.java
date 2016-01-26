@@ -8,32 +8,33 @@ public class InCityState implements State{
 	public InCityState(Country me, Place city){
 		this.country = me;
 		this.city = city;
-		this.setInstructions("\nWelcome to " +city.getName() + ", " + country.getUserName() + "! Please select an estate to visit from the \nfollowing list:" + city.getUncompletedPrintPlaces());
+		this.setInstructions("\nWelcome to " + this.city.getName() + ", " + this.country.getUserName() 
+		+ "! Please select an estate to visit from the \nfollowing list:" + this.city.getUncompletedPrintPlaces());
 	}
 	
 	@Override
 	public void entersBack() {
-		country.setState(country.inGame);
+		this.country.setState(this.country.inGame);
 	}
 
 	@Override
 	public void entersExit() {
-		country.setState(country.gameOver);
+		this.country.setState(this.country.gameOver);
 
 	}
 
 	@Override
 	public void entersOther(String text) {
-		Place estate = country.findEstate(text);
+		Place estate = this.country.findEstate(text);
 		if (!estate.getName().equals("null")){
-			country.setState(new InEstateState(country, estate));
+			this.country.setState(new InEstateState(this.country, estate));
 		} else {
 			System.out.println(text + " is not an estate from the list. Please choose again.");
 		}		
 	}
 
 	public Country getCountry() {
-		return country;
+		return this.country;
 	}
 
 

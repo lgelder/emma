@@ -7,31 +7,31 @@ public class InCountryState implements State {
 
 	public InCountryState(Country me){
 		this.country = me;
-		this.setInstructions(("\nPlease select a city to which to travel from the following list:" + country.getUncompletedPrintCities()));
+		this.setInstructions(("\nPlease select a city to which to travel from the following list:" + this.country.getUncompletedPrintCities()));
 	}
 
 	@Override
 	public void entersBack() {
-		country.setState(country.gameOver);
+		this.country.setState(this.country.gameOver);
 	}
 
 	@Override
 	public void entersExit() {
-		country.setState(country.gameOver);
+		this.country.setState(this.country.gameOver);
 	}
 
 	@Override
 	public void entersOther(String text) {
-		Place city = country.findCity(text);
+		Place city = this.country.findCity(text);
 		if (!city.getName().equals("null")){
-			country.setState(new InCityState(country, city));
+			this.country.setState(new InCityState(this.country, city));
 		} else {
 			System.out.println(text + " is not a city from the list. Please choose again.");
 		}
 	}
 	
 	public Country getCountry() {
-		return country;
+		return this.country;
 	}
 
 

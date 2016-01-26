@@ -15,41 +15,42 @@ public class InPersonState implements State {
 		this.person = person;
 		this.setCounter(0);
 
-		this.setInstructions("Hello, " + country.getUserName() + "! Would you like to attempt an activity?");
-		listOfAs = new ArrayList<Activity>();
-		for (Place a : person.getInsidePlaces()){
+		this.setInstructions("Hello, " + this.country.getUserName() + "! Would you like to attempt an activity?");
+		this.listOfAs = new ArrayList<Activity>();
+		for (Place a : this.person.getInsidePlaces()){
 			ActivityAdapter aa= (ActivityAdapter)a;
 			Activity act = (Activity)aa;
-			listOfAs.add(act);
+			this.listOfAs.add(act);
 		}
 	}
 	
 
 	@Override
 	public void entersBack() {
-		country.setState(new InEstateState(country, this.person.getContainerPlace()));
+		this.country.setState(new InEstateState(this.country, this.person.getContainerPlace()));
 
 	}
 
 	@Override
 	public void entersExit() {
-		country.setState(country.gameOver);
+		this.country.setState(this.country.gameOver);
 
 	}
 
 	@Override
 	public void entersOther(String text) {
 		if (text.startsWith("y")){
-			country.setState(new InActivityState(country, person, listOfAs.get(counter)));
+			this.country.setState(new InActivityState(this.country, this.person, this.listOfAs.get(counter)));
 		}else {
-			System.out.println("Thank you for coming to visit me " + country.getUserName() + ". I hope you come again!");
-			country.setState(new InEstateState(country, person.getContainerPlace()));
+			System.out.println("Thank you for talking with me " + this.country.getUserName() + ". I hope you come again!");
+			this.country.setState(new InEstateState(this.country, this.person.getContainerPlace()));
 		}
-		counter++;
+		this.listOfAs.get(this.counter).setCompleted(true);
+		this.counter++;
 	}
 
 	public Country getCountry() {
-		return country;
+		return this.country;
 	}
 
 

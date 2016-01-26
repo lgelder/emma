@@ -27,14 +27,8 @@ public class Country{
 			String activityFile2, String activityFile3, String scoreFile){
 		System.out.println("Setting up the game.");
 		System.out.print("Creating 'States'...");
-//		this.inGame = new InCountryState(this);
-//		this.inCity = new InCityState(this);
-//		this.inEstate = new InEstateState(this);
-//		this.inPerson = new InPersonState(this);
-//		this.inActivity = new InActivityState(this);
+
 		this.gameOver = new GameOverState(this);
-//		this.saving = new SavingState(this);
-//		this.setState(inGame);
 		System.out.print("Created 'States.' \nCreating Cities...");
 		cl = createCities(cityFile);
 		System.out.print("Created Cities. \nCreating Estates...");
@@ -311,25 +305,6 @@ public class Country{
 		
 		return scores;
 	}
-	
-//	public Place userInputCity(Scanner read){
-//		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase(); //found this function on StackOverflow: 
-//		Place city = findCity(selection);		//http://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
-//		return city;
-//	}
-//	
-//	public Place userInputEstate(Scanner read, City city){
-//		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-//		Place estate = findEstate(selection);
-//		return estate;
-//	}
-//	
-//	public Place userInputPerson(Scanner read, Estate estate){
-//		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-//		Place person = findPerson(selection);
-//		return person;
-//	}
-//	
 
 	
 	public void run(Scanner read){

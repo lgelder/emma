@@ -17,7 +17,7 @@ public class SavingState implements State {
 
 	@Override
 	public void entersExit() {
-		country.setState(country.gameOver);
+		this.country.setState(country.gameOver);
 
 	}
 	@Override
@@ -28,7 +28,7 @@ public class SavingState implements State {
 
 
 	public Country getCountry() {
-		return country;
+		return this.country;
 	}
 
 

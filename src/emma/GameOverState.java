@@ -23,7 +23,7 @@ public class GameOverState implements State {
 	}
 	
 	public Country getCountry() {
-		return country;
+		return this.country;
 	}
 
 
