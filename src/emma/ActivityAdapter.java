@@ -2,7 +2,7 @@ package emma;
 
 import java.util.List;
 
-public class ActivityAdapter implements Place {
+public class ActivityAdapter extends Activity implements Place {
 	private Activity activity;
 	
 	public ActivityAdapter(Activity a){
@@ -61,5 +61,20 @@ public class ActivityAdapter implements Place {
 
 	public void setActivity(Activity activity) {
 		this.activity = activity;
+	}
+
+	@Override
+	public String getAnswer() {
+		return activity.getAnswer();
+	}
+
+	@Override
+	public String getPrintQuestion() {
+		return activity.getPrintQuestion();
+	}
+
+	@Override
+	public Boolean checkAnswer(String answer) {
+		return activity.checkAnswer(answer);
 	}
 }

@@ -349,7 +349,7 @@ public class Country{
 		}
 	}
 	
-	public void saveScore(Scanner read, String keep){
+	public void saveScore(String keep){
 		if (keep.startsWith("y")){
 			try (FileWriter writer = new FileWriter("C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Scores.txt", true)) {
 				writer.write(this.userName + "\n" + this.correct + "\n");
@@ -416,11 +416,11 @@ public class Country{
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Unscramble.txt",
 				"C:\\Users\\Lia Gelder\\Documents\\GitHub\\Emma\\src\\emma\\Scores.txt");
 			
-		String welcome = "Welcome to 18th-century England!. Here you can visit cities and estates \n"
+		String welcome = "Welcome to 18th-century England. Here you can visit cities and estates \n"
 				+ "from Jane Austen's novels and complete activities given to you by various \n"
 				+ "characters.  You can enter your choices and answers by typing them, and \n"
-				+ "can type 'back' to go up a level (leave an estate, etc) at any time. (Leaving \n"
-				+ "the country takes you out of the game.) We hope you enjoy your time here!";
+				+ "can type 'back' to go up a level (leave an estate, etc) or 'exit' to leave \n"
+				+ "the game entirely. We hope you enjoy your time here!";
 		System.out.println(welcome);
 		
 		String getName = "Please enter your name: ";
@@ -433,6 +433,10 @@ public class Country{
 		austen.printHighScores();
 		
 		austen.run(read);
+		
+		System.out.println("You completed " + austen.getCorrect() + " activities! Would you like to save your score?");
+		String keep = read.nextLine();
+		austen.saveScore(keep);
 		read.close();
 
 		String thanksForPlaying = "Thank you for visiting us! We hope you come back soon.";

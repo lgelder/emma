@@ -1,24 +1,22 @@
 package emma;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InActivityState implements State{
 	private Country country;
 	private Place person;
+	private Activity activity;
 	private String instructions;
-	private List<Activity> listOfAs;
-
-	public InActivityState(Country me, Place person){
+	
+	public InActivityState(Country me, Place person, Activity activity){
 		this.country = me;
 		this.person = person;
-		for (Place a : person.getInsidePlaces()){
-			Activity act = (Activity)a;
-			listOfAs.add(act);
-		}
-		
+		this.activity = activity;
+		this.setInstructions(activity.getPrintQuestion());
+
 	}
 	
-
 	@Override
 	public void entersBack() {
 		country.setState(new InPersonState(country, person));
@@ -31,9 +29,17 @@ public class InActivityState implements State{
 	}
 	@Override
 	public void entersOther(String text) {
-//		if (text.equals(activity.getAnswer())){
-			
+//		Activity a = listOfAs.get(counter);
+//		if (!a.getCompleted()){
+//			System.out.println(a.getPrintQuestion());
 //		}
+		String selection = text.replaceAll("[^a-zA-Z ]", "").toLowerCase();
+		Boolean answer = this.activity.checkAnswer(selection);
+		Country.interpretAnswer(answer);
+		if (answer){
+			country.setCorrect(country.getCorrect() + 1);
+		}
+		country.setState(new InPersonState(country, person));
 	}
 
 
@@ -70,6 +76,9 @@ public class InActivityState implements State{
 		return this.instructions;
 
 	}
+
+
+
 
 
 	
