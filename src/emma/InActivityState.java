@@ -30,8 +30,22 @@ public class InActivityState implements State{
 	
 	@Override
 	public void entersBack() {
-		this.country.setState(new InPersonState(this.country, this.city, this.estate, this.person, 
+//		if (this.ccounter == this.country.getCl().size()){
+//			this.country.setCompleted(true);
+//			this.country.setState(this.country.gameOver);
+//		}else if (this.ecounter == this.city.getInsidePlaces().size()){
+//			this.city.setCompleted(true);
+//			this.country.setState(new InCountryState(this.country, this.ccounter));
+//		}else if (this.pcounter == this.estate.getInsidePlaces().size()){
+//			this.estate.setCompleted(true);
+//			this.country.setState(new InCityState(this.country, this.city, this.ccounter, this.pcounter));
+//		}else if (this.acounter == this.person.getInsidePlaces().size()){
+//			this.person.setCompleted(true);
+//			this.country.setState(new InEstateState(this.country, this.city, this.estate, this.ccounter, this.ecounter, this.pcounter));
+//		}else{
+			this.country.setState(new InPersonState(this.country, this.city, this.estate, this.person, 
 				this.ccounter, this.ecounter, this.pcounter, this.acounter));
+//		}
 	}
 
 	@Override
@@ -49,6 +63,22 @@ public class InActivityState implements State{
 			this.activity.setCompleted(true);
 		}
 		this.acounter++;
+//		if (this.ccounter == this.country.getCl().size()){
+//			this.country.setCompleted(true);
+//			this.country.setState(this.country.gameOver);
+//		}else if (this.ecounter == this.city.getInsidePlaces().size()){
+//			this.city.setCompleted(true);
+//			this.country.setState(new InCountryState(this.country, this.ccounter));
+//		}else if (this.pcounter == this.estate.getInsidePlaces().size()){
+//			this.estate.setCompleted(true);
+//			this.country.setState(new InCityState(this.country, this.city, this.ccounter, this.pcounter));
+//		}else if (this.acounter == this.person.getInsidePlaces().size()){
+//			this.person.setCompleted(true);
+//			this.country.setState(new InEstateState(this.country, this.city, this.estate, this.ccounter, this.ecounter, this.pcounter));
+//		}else{
+//			this.country.setState(new InPersonState(this.country, this.city, this.estate, this.person, 
+//				this.ccounter, this.ecounter, this.pcounter, this.acounter));
+//		}
 //		this.country.setState(new InPersonState(this.country, this.city, this.estate, this.person, 
 //				this.ccounter, this.ecounter, this.pcounter, this.acounter));
 		if (this.acounter == this.person.getInsidePlaces().size()){
