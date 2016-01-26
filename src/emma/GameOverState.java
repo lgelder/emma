@@ -32,13 +32,13 @@ public class GameOverState implements State {
 	}
 
 	@Override
-	public void setPlace(String text) {
+	public void setPlace(Place place) {
 		System.out.println("gameOver can't have a place");
 	}
 
 
 	@Override
-	public Object getPlace() {
+	public Place getPlace() {
 		System.out.println("gameOver doesn't have a place");
 		return null;
 	}

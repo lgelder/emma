@@ -38,14 +38,14 @@ public class SavingState implements State {
 
 
 	@Override
-	public void setPlace(String text) {
+	public void setPlace(Place place) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public Object getPlace() {
+	public Place getPlace() {
 		// TODO Auto-generated method stub
 		return null;
 	}

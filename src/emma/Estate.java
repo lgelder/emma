@@ -5,31 +5,29 @@ import java.util.List;
 
 //a house or estate
 
-public class Estate {
+public class Estate implements Place {
 	private String name;
-//	private String city;
-	private City city;
+	private Place city;
 	private Boolean completed;
-	private List<Person> people;
+	private List<Place> people;
 	
 	public Estate(String name, Boolean completed){
 		this.name = name;
-//		this.city = city;
 		this.completed = completed;
-		people = new ArrayList<Person>();
+		people = new ArrayList<Place>();
 	}
 	
-	public void addPerson(Person p){
+	public void addInsidePlace(Place p){
 		people.add(p);
 	}
 	
-	public List<Person> getPeople(){
+	public List<Place> getInsidePlaces(){
 		return people;
 	}
 	
-	public String getUncompletedPrintPeople(){
+	public String getUncompletedPrintPlaces(){
 		String people = "";
-		for (Person p : this.people){
+		for (Place p : this.people){
 			if (!p.getCompleted()){
 				people += "\n" + p.getName();
 			}
@@ -54,12 +52,12 @@ public class Estate {
 //		this.city = city;
 //	}
 
-	public City getCity() {
+	public Place getContainerPlace() {
 		return city;
 	}
 
-	public void setCity(City city) {
-		this.city = city;
+	public void setContainerPlace(Place place) {
+		this.city = place;
 	}
 	
 	public Boolean getCompleted() {

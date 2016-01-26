@@ -2,11 +2,13 @@ package emma;
 
 public class InCityState implements State{
 	private Country country;
-	private String city;
+	private Place city;
 	private String instructions;
 
-	public InCityState(Country me){
+	public InCityState(Country me, Place city){
 		this.country = me;
+		this.city = city;
+		this.setInstructions("\nWelcome to " +city.getName() + "! Please select an estate to visit from the \nfollowing list:" + city.getUncompletedPrintPlaces());
 	}
 	
 
@@ -38,13 +40,13 @@ public class InCityState implements State{
 	}
 
 	@Override
-	public void setPlace(String text) {
-		this.city = text;
+	public void setPlace(Place place) {
+		this.city = place;
 	}
 
 
 	@Override
-	public Object getPlace() {
+	public Place getPlace() {
 		return this.city;
 	}
 

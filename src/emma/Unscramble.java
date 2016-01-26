@@ -4,7 +4,7 @@ public class Unscramble extends Activity implements ActivityInterface{
 	private String phrase;
 	private String scrambled;
 	
-	public Unscramble(Person person, String phrase, String scrambled){
+	public Unscramble(Place person, String phrase, String scrambled){
 		this.person = person;
 		this.instructions =  "Figure out to what phrase these letters can be rearranged: \n";
 		this.completed = false;

@@ -2,7 +2,7 @@ package emma;
 
 public abstract class Activity implements ActivityInterface{
 //	protected String person;
-	protected Person person;
+	protected Place person;
 	protected String instructions;
 	protected Boolean completed;
 //	
@@ -14,7 +14,7 @@ public abstract class Activity implements ActivityInterface{
 	public String getInstructions() {
 		return instructions;
 	}
-	public void setDescription(String instructions) {
+	public void setInstructions(String instructions) {
 		this.instructions = instructions;
 	}
 	public Boolean getCompleted() {
@@ -29,10 +29,10 @@ public abstract class Activity implements ActivityInterface{
 //	public void setPerson(String person) {
 //		this.person = person;
 //	}
-	public Person getPerson() {
+	public Place getPerson() {
 		return person;
 	}
-	public void setPerson(Person person) {
+	public void setPerson(Place person) {
 		this.person = person;
 	}
 	

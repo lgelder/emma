@@ -2,11 +2,12 @@ package emma;
 
 public class InActivityState implements State{
 	private Country country;
-	private Activity activity;
+	private Place activity;
 	private String instructions;
 
-	public InActivityState(Country me){
+	public InActivityState(Country me, Place activity){
 		this.country = me;
+		this.activity = activity;
 	}
 	
 
@@ -23,9 +24,9 @@ public class InActivityState implements State{
 	}
 	@Override
 	public void entersOther(String text) {
-		if (text.equals(activity.getAnswer())){
+//		if (text.equals(activity.getAnswer())){
 			
-		}
+//		}
 	}
 
 
@@ -39,16 +40,14 @@ public class InActivityState implements State{
 	}
 
 	@Override
-	public void setPlace(String text) {
-		// TODO Auto-generated method stub
-		
+	public void setPlace(Place place) {
+		this.activity = place;
 	}
 
 
 	@Override
-	public Object getPlace() {
-		// TODO Auto-generated method stub
-		return null;
+	public Place getPlace() {
+		return this.activity;
 	}
 
 

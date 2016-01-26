@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 
 public class Country{
-	private List<City> cl;
+	private List<Place> cl;
 	private Boolean completed;
 	private int correct;
 	private HashMap<String, Integer> scores;
@@ -64,8 +64,8 @@ public class Country{
 	    return true;
 	}
 	
-	public List<City> createCities(String file){
-		List<City> cityList = new ArrayList<City>();
+	public List<Place> createCities(String file){
+		List<Place> cityList = new ArrayList<Place>();
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String line  = reader.readLine();
@@ -73,7 +73,7 @@ public class Country{
 				line = reader.readLine();
 				while(!isWhitespace(line) && line != null){
 	        		String name = line;
-	        		City c = new City(name, false);
+	        		Place c = new City(name, false);
 	        		cityList.add(c);
 	        		line = reader.readLine();
 				}
@@ -87,7 +87,7 @@ public class Country{
 	}
 	
 	public void createEstates(String file){
-		List<Estate> listOfEstates = new ArrayList<Estate>();
+		List<Place> listOfEstates = new ArrayList<Place>();
 		try {
 	        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 	        String line = null;
@@ -97,9 +97,9 @@ public class Country{
 	        	while(!isWhitespace(line) && line != null){
 	        		String name = line;
 	        		String cityName = bufferedReader.readLine();
-	        		City city = this.findCity(cityName);
-	        		Estate e = new Estate(name, false);
-	        		e.setCity(city);
+	        		Place city = this.findCity(cityName);
+	        		Place e = new Estate(name, false);
+	        		e.setContainerPlace(city);
 	        		listOfEstates.add(e);
 	        		line = bufferedReader.readLine();
 	        	}
@@ -119,10 +119,10 @@ public class Country{
             // Or we could just do this: 
 //	             ex.printStackTrace();
         }
-		for (City c : this.cl){
-			for (Estate e : listOfEstates){
-				if (c == e.getCity()){
-					c.addEstate(e);
+		for (Place c : this.cl){
+			for (Place e : listOfEstates){
+				if (c == e.getContainerPlace()){
+					c.addInsidePlace(e);
 				}
 			}
 			System.out.print("added estates to cities...");
@@ -130,7 +130,7 @@ public class Country{
 	}
 	
 	public void createPeople(String file){
-		List<Person> listOfPeople = new ArrayList<Person>();
+		List<Place> listOfPeople = new ArrayList<Place>();
 		try {
 	        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 	        String line = null;
@@ -140,9 +140,9 @@ public class Country{
 	        	while(!isWhitespace(line) && line != null){
 	        		String name = line;
 	        		String estateName = bufferedReader.readLine();
-	        		Estate estate = findEstate(estateName);
-	        		Person p = new Person(name, false);
-	        		p.setEstate(estate);
+	        		Place estate = findEstate(estateName);
+	        		Place p = new Person(name, false);
+	        		p.setContainerPlace(estate);
 	        		listOfPeople.add(p);
 	        		line = bufferedReader.readLine();
 	        	}
@@ -162,11 +162,11 @@ public class Country{
             // Or we could just do this: 
 //             ex.printStackTrace();
         }
-		for (City c : cl){
-			for (Estate e : c.getEstates()){
-				for (Person p : listOfPeople){
-					if (p.getEstate() == e){
-						e.addPerson(p);
+		for (Place c : cl){
+			for (Place e : c.getInsidePlaces()){
+				for (Place p : listOfPeople){
+					if (p.getContainerPlace() == e){
+						e.addInsidePlace(p);
 					}
 				}
 			}
@@ -175,7 +175,7 @@ public class Country{
 	}
 	
 	public void createActivities(String tqFile, String ctqFile, String usFile){
-		List<Activity> listOfActivities = new ArrayList<Activity>();
+		List<Place> listOfActivities = new ArrayList<Place>();
 		try {
 	        BufferedReader bufferedReader = new BufferedReader(new FileReader(tqFile));
 			// Read TriviaQuestions
@@ -194,9 +194,10 @@ public class Country{
             		}
             		line = choice;
             		List<Option> lo = createOptions(choices);
-            		Person person = findPerson(personName);
+            		Place person = findPerson(personName);
             		Activity a = new TriviaQuestion(person, question, answer, lo);
-            		listOfActivities.add(a);
+            		Place p = new ActivityAdapter(a);
+            		listOfActivities.add(p);
             	}
             }   
     		System.out.print("added trivia questions...");
@@ -219,9 +220,10 @@ public class Country{
             		}
             		line2 = choice;
             		List<Option> lo = createOptions(choices);
-            		Person person = findPerson(personName);
+            		Place person = findPerson(personName);
             		Activity a = new CompleteTheQuote(person, question, answer, lo);
-            		listOfActivities.add(a);
+            		Place p = new ActivityAdapter(a);
+            		listOfActivities.add(p);
             	}
             }
     		System.out.print("added complete the quotes...");
@@ -237,9 +239,10 @@ public class Country{
             		String personName = line3;
             		String phrase = bufferedReader3.readLine();
             		String scrambled = bufferedReader3.readLine();
-            		Person person = findPerson(personName);
+            		Place person = findPerson(personName);
             		Activity a = new Unscramble(person, phrase, scrambled);
-            		listOfActivities.add(a);
+            		Place p = new ActivityAdapter(a);
+            		listOfActivities.add(p);
             		line3 = bufferedReader3.readLine();
             	}
             }   
@@ -260,12 +263,12 @@ public class Country{
 //		for (int i = 0; i < listOfActivities.size(); i++){
 //			System.out.println(listOfActivities.get(i).getPrintQuestion());
 //		}
-		for (City c : cl){
-			for (Estate e : c.getEstates()){
-				for (Person p : e.getPeople()){
-					for (Activity a : listOfActivities){
-						if (a.getPerson() == p){
-							p.addActivity(a);
+		for (Place c : cl){
+			for (Place e : c.getInsidePlaces()){
+				for (Place p : e.getInsidePlaces()){
+					for (Place a : listOfActivities){
+						if (a.getContainerPlace() == p){
+							p.addInsidePlace(a);
 						}
 					}
 				}
@@ -309,118 +312,29 @@ public class Country{
 		return scores;
 	}
 	
-	public City userInputCity(Scanner read){
+	public Place userInputCity(Scanner read){
 		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase(); //found this function on StackOverflow: 
-		City city = findCity(selection);		//http://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
+		Place city = findCity(selection);		//http://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
 		return city;
 	}
 	
-	public Estate userInputEstate(Scanner read, City city){
+	public Place userInputEstate(Scanner read, City city){
 		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-		Estate estate = findEstate(selection);
+		Place estate = findEstate(selection);
 		return estate;
 	}
 	
-	public Person userInputPerson(Scanner read, Estate estate){
+	public Place userInputPerson(Scanner read, Estate estate){
 		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-		Person person = findPerson(selection);
+		Place person = findPerson(selection);
 		return person;
 	}
 	
-	public void run2(){
-		Scanner read = new Scanner(System.in);
-		String selection = "";
-		while (!getCompleted() && !selection.equals("exit")){
-			System.out.println("\nPlease select a city to which to travel from the following list:" + getUncompletedPrintCities());
-			City city = userInputCity(read);
-			if (city.getName().equals("back") || (city.getName().equals("exit"))){
-				break;
-			}
-		    while (!city.getName().equals("null") && !city.getCompleted() && !selection.equals("exit")){
-				System.out.println("\nWelcome to " +city.getName() + "! Please select an estate to visit from the \nfollowing list:" + city.getUncompletedPrintEstates());
-				Estate estate = userInputEstate(read, city);
-				if (estate.getName().equals("back")){
-					break;
-				}
-				while (!estate.getName().equals("null") && !estate.getCompleted() && !selection.equals("exit")){
-					System.out.println("\nWelcome to " + estate.getName() + "! Please select a person with whom you would like \nto converse "
-							+ "from the following list of people currently at " + estate.getName() + estate.getUncompletedPrintPeople());
-					Person person = userInputPerson(read, estate);
-					if (person.getName().equals("back")){
-						break;
-					}
-					while (!person.getName().equals("null") && !person.getCompleted() && !selection.equals("exit")){
-						for (Activity a: person.getActivities()){
-							if (!a.getCompleted()){
-								System.out.println(a.getPrintQuestion());
 
-							}
-							selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-							if (selection.equals("back")){
-								break;
-							}
-							Boolean answer = a.checkAnswer(selection);
-							interpretAnswer(answer);
-							if (answer){
-								this.correct++;
-							}
-						}
-						int counter = 0;
-						for (Activity a : person.getActivities()){
-							if (a.getCompleted() == true){
-								counter++;
-							}
-						}
-						if (counter == person.getActivities().size()){
-							person.setCompleted(true);
-							System.out.println("Congratulations! \nYou have completed all of the activities " 
-							+ person.getName() + " asked of you!\n");
-						}
-					}
-					int counter = 0;
-					for (Person p : estate.getPeople()){
-						if (p.getCompleted() == true){
-							counter++;
-						}
-					}
-					if (counter == estate.getPeople().size()){
-						estate.setCompleted(true);
-						System.out.println("Congratulations! \nYou have completed all of the activities at " 
-								+ estate.getName() + "!\n");
-					}
-				}
-				int counter = 0;
-				for (Estate e : city.getEstates()){
-					if (e.getCompleted()){
-						counter++;
-					}
-				}
-				if (counter == city.getEstates().size()){
-					city.setCompleted(true);
-					System.out.println("Congratulations! \nYou have completed all of the activities in " + city.getName() + "!\n");
-
-				}
-			}
-		    int counter = 0;
-		    for (City c: cl){
-		    	if (c.getCompleted()){
-		    		counter++;
-		    	}
-		    }
-		    if (counter == cl.size()){
-		    	setCompleted(true);
-		    	System.out.println("Congratulations! \nYou have completed all of the activities in the entire game!");
-		    	break;
-		    }
-		}		
-		System.out.println("You completed " + this.correct + " actitivies!\nWould you like to save your score?");
-		String keep = read.nextLine().toLowerCase();
-		saveScore(read, keep);
-		read.close();
-	}
 	
 	public void run(Scanner read){
-		this.state = new InCountryState(this);
+		this.inGame = new InCountryState(this);
+		this.state = this.inGame;
 		String userInput = null;
 		while (this.getState() != gameOver){
 			System.out.println(this.state.getInstructions());
@@ -447,7 +361,7 @@ public class Country{
 	
 	public String getUncompletedPrintCities() {
 		String cities = "";
-		for (City c : cl){
+		for (Place c : cl){
 			if (!c.getCompleted()){
 				cities += "\n" + c.getName();
 			}
@@ -456,8 +370,8 @@ public class Country{
 		return cities;
 	}
 	
-	public City findCity(String city){ //turn these into factories????
-		for (City c : cl){
+	public Place findCity(String city){ //turn these into factories????
+		for (Place c : cl){
 			if (c.getName().equals(city)){  
 	        	return c;
 	        }
@@ -465,20 +379,20 @@ public class Country{
 		return new City("null", true);
 	}
 
-	public Estate findEstate(String estate){
-		for (City c : cl){
-			for (Estate e : c.getEstates()){
+	public Place findEstate(String estate){
+		for (Place c : cl){
+			for (Place e : c.getInsidePlaces()){
 				if (e.getName().equals(estate));
 			}
 		}
 		return new Estate("null", true);
 	}
 	
-	public Person findPerson(String person){
-		for (City c : cl){
-			for (Estate e : c.getEstates()){
-				for (Person p : e.getPeople()){
-					if (p.getEstate().equals(e)){
+	public Place findPerson(String person){
+		for (Place c : cl){
+			for (Place e : c.getInsidePlaces()){
+				for (Place p : e.getInsidePlaces()){
+					if (p.getName().equals(person)){
 						return p;
 					}
 				}

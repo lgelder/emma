@@ -2,11 +2,12 @@ package emma;
 
 public class InCountryState implements State {
 	private Country country;
-	private String instructions = ("\nPlease select a city to which to travel from the following list:" + country.getUncompletedPrintCities());
+	private String instructions;
 
 
 	public InCountryState(Country me){
 		this.country = me;
+		this.setInstructions(("\nPlease select a city to which to travel from the following list:" + country.getUncompletedPrintCities()));
 	}
 
 	@Override
@@ -21,8 +22,8 @@ public class InCountryState implements State {
 
 	@Override
 	public void entersOther(String text) {
-		country.setState(new InCityState(country));
-		country.state.setPlace(text);
+		Place city = country.findCity(text);
+		country.setState(new InCityState(country, city));
 	}
 	
 	public Country getCountry() {
@@ -36,13 +37,13 @@ public class InCountryState implements State {
 
 
 	@Override
-	public void setPlace(String text) {
+	public void setPlace(Place place) {
 		System.out.println("can't assign a place to a country");
 	}
 
 
 	@Override
-	public Object getPlace() {
+	public Place getPlace() {
 		System.out.println("a country doesn't have a place");
 		return null;
 	}

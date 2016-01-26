@@ -7,7 +7,7 @@ public class TriviaQuestion extends Activity implements ActivityInterface{
 	private String answer;
 	private List<Option> choices;
 	
-	public TriviaQuestion(Person person, String question, String answer, List<Option> choices){
+	public TriviaQuestion(Place person, String question, String answer, List<Option> choices){
 		this.person = person;
 		this.completed = false;
 		this.instructions = "Enter your answer in word format: \n";

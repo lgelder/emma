@@ -3,28 +3,28 @@ package emma;
 import java.util.ArrayList;
 import java.util.List;
 
-public class City {
+public class City implements Place{
 	private String name;
 	private Boolean completed;
-	private List<Estate> estates;
+	private List<Place> estates;
 	
 	public City(String name, Boolean completed){
 		this.name = name;
 		this.completed = completed;
-		this.estates = new ArrayList<Estate>();
+		this.estates = new ArrayList<Place>();
 	}
 	
-	public void addEstate(Estate e){
-		estates.add(e);
+	public void addInsidePlace(Place p){
+		estates.add(p);
 	}
 	
-	public List<Estate> getEstates(){
+	public List<Place> getInsidePlaces(){
 		return estates;
 	}
 	
-	public String getUncompletedPrintEstates(){
+	public String getUncompletedPrintPlaces(){
 		String estates = "";
-		for (Estate e : this.estates){
+		for (Place e : this.estates){
 			if (!e.getCompleted()){
 				estates += "\n" + e.getName();
 			}
@@ -47,6 +47,16 @@ public class City {
 
 	public void setCompleted(Boolean completed) {
 		this.completed = completed;
+	}
+
+	@Override
+	public Place getContainerPlace() {
+		return null;
+	}
+
+	@Override
+	public void setContainerPlace(Place place) {
+		System.out.println("city doesn't have a container place beside the country");
 	}
 
 }

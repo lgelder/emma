@@ -2,7 +2,7 @@ package emma;
 
 public class InEstateState implements State {
 	private Country country;
-	private Estate estate;
+	private Place estate;
 	private String instructions;
 
 	public InEstateState(Country me){
@@ -12,8 +12,7 @@ public class InEstateState implements State {
 
 	@Override
 	public void entersBack() {
-		// TODO Auto-generated method stub
-
+		country.setState(new InCityState(country, this.estate.getContainerPlace()));
 	}
 
 	@Override
@@ -37,41 +36,28 @@ public class InEstateState implements State {
 		this.country = country;
 	}
 
-
-	public Estate getEstate() {
-		return estate;
-	}
-
-
-	public void setEstate(Estate estate) {
-		this.estate = estate;
-	}
-
 	@Override
-	public void setPlace(String text) {
-		this.instructions = text;
+	public void setPlace(Place place) {
+		this.estate = place;
 		
 	}
 
-
 	@Override
-	public Object getPlace() {
-		return this.instructions;
+	public Place getPlace() {
+		return this.estate;
 
 	}
 
 
 	@Override
 	public void setInstructions(String text) {
-		// TODO Auto-generated method stub
-		
+		this.instructions = text;
 	}
 
 
 	@Override
 	public String getInstructions() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.instructions;
 	}
 
 
