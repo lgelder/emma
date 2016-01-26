@@ -29,7 +29,7 @@ public class Country{
 		System.out.print("Creating 'States'...");
 		this.gameOver = new GameOverState(this);
 		System.out.print("Created 'States.' \nCreating Cities...");
-		cl = createCities(cityFile);
+		setCl(createCities(cityFile));
 		System.out.print("Created Cities. \nCreating Estates...");
 		createEstates(estateFile);
 		System.out.print("Created Estates. \nCreating People...");
@@ -112,7 +112,7 @@ public class Country{
             // Or we could just do this: 
 //	             ex.printStackTrace();
         }
-		for (Place c : this.cl){
+		for (Place c : this.getCl()){
 			for (Place e : listOfEstates){
 				if (c == e.getContainerPlace()){
 					c.addInsidePlace(e);
@@ -155,7 +155,7 @@ public class Country{
             // Or we could just do this: 
 //             ex.printStackTrace();
         }
-		for (Place c : cl){
+		for (Place c : getCl()){
 			for (Place e : c.getInsidePlaces()){
 				for (Place p : listOfPeople){
 					if (p.getContainerPlace() == e){
@@ -256,7 +256,7 @@ public class Country{
 //		for (int i = 0; i < listOfActivities.size(); i++){
 //			System.out.println(listOfActivities.get(i).getPrintQuestion());
 //		}
-		for (Place c : cl){
+		for (Place c : getCl()){
 			for (Place e : c.getInsidePlaces()){
 				for (Place p : e.getInsidePlaces()){
 					for (Place a : listOfActivities){
@@ -307,7 +307,7 @@ public class Country{
 
 	
 	public void run(Scanner read){
-		this.inGame = new InCountryState(this);
+		this.inGame = new InCountryState(this, 0);
 		this.state = this.inGame;
 		String userInput = null;
 		while (this.getState() != gameOver){
@@ -335,7 +335,7 @@ public class Country{
 	
 	public String getUncompletedPrintCities() {
 		String cities = "";
-		for (Place c : cl){
+		for (Place c : getCl()){
 			if (!c.getCompleted()){
 				cities += "\n" + c.getName();
 			}
@@ -346,7 +346,7 @@ public class Country{
 	
 	public Place findCity(String city){ //turn these into factories????
 		String cityString = city.replaceAll("[^a-zA-Z ]", "").toLowerCase();
-		for (Place c : cl){
+		for (Place c : getCl()){
 			if (c.getName().replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(cityString)){  
 	        	return c;
 	        }
@@ -356,7 +356,7 @@ public class Country{
 
 	public Place findEstate(String estate){
 		String estateString = estate.replaceAll("[^a-zA-Z ]", "").toLowerCase();
-		for (Place c : cl){
+		for (Place c : getCl()){
 			for (Place e : c.getInsidePlaces()){
 				if (e.getName().replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(estateString)){
 					return e;
@@ -368,7 +368,7 @@ public class Country{
 	
 	public Place findPerson(String person){
 		String personString = person.replaceAll("[^a-zA-Z ]", "").toLowerCase();
-		for (Place c : cl){
+		for (Place c : getCl()){
 			for (Place e : c.getInsidePlaces()){
 				for (Place p : e.getInsidePlaces()){
 					if (p.getName().replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(personString)){
@@ -463,5 +463,13 @@ public class Country{
 	}
 	public String getUserName(){
 		return this.userName;
+	}
+
+	public List<Place> getCl() {
+		return cl;
+	}
+
+	public void setCl(List<Place> cl) {
+		this.cl = cl;
 	}
 }

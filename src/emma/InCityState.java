@@ -4,10 +4,15 @@ public class InCityState implements State{
 	private Country country;
 	private Place city;
 	private String instructions;
+	private int pcounter;
+	private int ecounter;
+	private int ccounter;
 
-	public InCityState(Country me, Place city){
+	public InCityState(Country me, Place city, int ccounter, int ecounter){
 		this.country = me;
 		this.city = city;
+		this.ecounter = ecounter;
+		this.ccounter = ccounter;
 		this.setInstructions("\nWelcome to " + this.city.getName() + ", " + this.country.getUserName() 
 		+ "! Please select an estate to visit from the \nfollowing list:" + this.city.getUncompletedPrintPlaces());
 	}
@@ -27,7 +32,7 @@ public class InCityState implements State{
 	public void entersOther(String text) {
 		Place estate = this.country.findEstate(text);
 		if (!estate.getName().equals("null")){
-			this.country.setState(new InEstateState(this.country, this.city, estate));
+			this.country.setState(new InEstateState(this.country, this.city, estate, this.ccounter, this.ecounter, 0));
 		} else {
 			System.out.println(text + " is not an estate from the list. Please choose again.");
 		}		
@@ -67,6 +72,29 @@ public class InCityState implements State{
 
 	}
 
+	public int getCcounter() {
+		return ccounter;
+	}
 
+	public void setCcounter(int ccounter) {
+		this.ccounter = ccounter;
+	}
+
+	public int getEcounter() {
+		return ecounter;
+	}
+
+	public void setEcounter(int ecounter) {
+		this.ecounter = ecounter;
+	}
+
+	public int getPcounter() {
+		return pcounter;
+	}
+
+	public void setPcounter(int pcounter) {
+		this.pcounter = pcounter;
+	}
+	
 
 }

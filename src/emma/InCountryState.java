@@ -3,10 +3,15 @@ package emma;
 public class InCountryState implements State {
 	private Country country;
 	private String instructions;
+//	private int acounter;
+//	private int pcounter;
+//	private int ecounter;
+	private int ccounter;
 
 
-	public InCountryState(Country me){
+	public InCountryState(Country me, int ccounter){
 		this.country = me;
+		this.ccounter = ccounter;
 		this.setInstructions(("\nPlease select a city to which to travel from the following list:" + this.country.getUncompletedPrintCities()));
 	}
 
@@ -24,7 +29,7 @@ public class InCountryState implements State {
 	public void entersOther(String text) {
 		Place city = this.country.findCity(text);
 		if (!city.getName().equals("null")){
-			this.country.setState(new InCityState(this.country, city));
+			this.country.setState(new InCityState(this.country, city, this.ccounter, 0));
 		} else {
 			System.out.println(text + " is not a city from the list. Please choose again.");
 		}
@@ -62,6 +67,13 @@ public class InCountryState implements State {
 		return this.instructions;
 	}
 
+	public int getCcounter() {
+		return ccounter;
+	}
+
+	public void setCcounter(int ccounter) {
+		this.ccounter = ccounter;
+	}
 
 
 }

@@ -5,11 +5,17 @@ public class InEstateState implements State {
 	private Place city;
 	private Place estate;
 	private String instructions;
-
-	public InEstateState(Country me, Place city, Place estate){
+	private int pcounter;
+	private int ecounter;
+	private int ccounter;
+	
+	public InEstateState(Country me, Place city, Place estate, int ccounter, int ecounter, int pcounter){
 		this.country = me;
 		this.city = city;
 		this.estate = estate;
+		this.pcounter = pcounter;
+		this.ecounter = ecounter;
+		this.ccounter = ccounter;
 		this.setInstructions("\nWelcome to " + this.estate.getName() + ", " + this.country.getUserName() 
 		+ "! Please select a person to interact with from the \nfollowing list:" + this.estate.getUncompletedPrintPlaces());
 
@@ -17,7 +23,7 @@ public class InEstateState implements State {
 	
 	@Override
 	public void entersBack() {
-		this.country.setState(new InCityState(this.country, this.city));
+		this.country.setState(new InCityState(this.country, this.city, this.ccounter, this.ecounter));
 	}
 
 	@Override
@@ -30,7 +36,7 @@ public class InEstateState implements State {
 	public void entersOther(String text) {
 		Place person = this.country.findPerson(text);
 		if (!person.getName().equals("null")){
-			this.country.setState(new InPersonState(this.country, this.city, this.estate, person, 0));
+			this.country.setState(new InPersonState(this.country, this.city, this.estate, person, this.ccounter, this.ecounter, this.pcounter, 0));
 		} else {
 			System.out.println(text + " is not a person from the list. Please choose again.");
 		}			
@@ -68,6 +74,29 @@ public class InEstateState implements State {
 	public String getInstructions() {
 		return this.instructions;
 	}
+	public int getCcounter() {
+		return ccounter;
+	}
 
+	public void setCcounter(int ccounter) {
+		this.ccounter = ccounter;
+	}
+
+	public int getEcounter() {
+		return ecounter;
+	}
+
+	public void setEcounter(int ecounter) {
+		this.ecounter = ecounter;
+	}
+
+	public int getPcounter() {
+		return pcounter;
+	}
+
+	public void setPcounter(int pcounter) {
+		this.pcounter = pcounter;
+	}
+	
 
 }
