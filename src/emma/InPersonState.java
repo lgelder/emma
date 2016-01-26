@@ -2,16 +2,19 @@ package emma;
 
 public class InPersonState implements State {
 	private Country country;
+	private Place person;
 	private String instructions;
 
-	public InPersonState(Country me){
+	public InPersonState(Country me, Place person){
 		this.country = me;
+		this.person = person;
+		this.setInstructions("Hello, " + country.getUserName() + "! Would you like to attempt an activity?");
 	}
 	
 
 	@Override
 	public void entersBack() {
-		// TODO Auto-generated method stub
+		country.setState(new InEstateState(country, this.person.getContainerPlace()));
 
 	}
 
@@ -23,8 +26,11 @@ public class InPersonState implements State {
 
 	@Override
 	public void entersOther(String text) {
-		// TODO Auto-generated method stub
-		
+		if (text.startsWith("y")){
+			country.setState(new InActivityState(country, person));
+		}else {
+			System.out.println("Thank you for coming to visit me " + country.getUserName() + ". I hope you come again!");
+		}
 	}
 
 	public Country getCountry() {
@@ -38,15 +44,13 @@ public class InPersonState implements State {
 
 	@Override
 	public void setPlace(Place place) {
-		// TODO Auto-generated method stub
-		
+		this.person = place;
 	}
 
 
 	@Override
 	public Place getPlace() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.person;
 	}
 
 

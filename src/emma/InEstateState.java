@@ -5,11 +5,13 @@ public class InEstateState implements State {
 	private Place estate;
 	private String instructions;
 
-	public InEstateState(Country me){
+	public InEstateState(Country me, Place estate){
 		this.country = me;
+		this.estate = estate;
+		this.setInstructions("\nWelcome to " +estate.getName() + ", " + country.getUserName() + "! Please select a person to interact with from the \nfollowing list:" + estate.getUncompletedPrintPlaces());
+
 	}
 	
-
 	@Override
 	public void entersBack() {
 		country.setState(new InCityState(country, this.estate.getContainerPlace()));
@@ -23,8 +25,12 @@ public class InEstateState implements State {
 
 	@Override
 	public void entersOther(String text) {
-		// TODO Auto-generated method stub
-		
+		Place person = country.findPerson(text);
+		if (!person.getName().equals("null")){
+			country.setState(new InPersonState(country, person));
+		} else {
+			System.out.println(text + " is not a person from the list. Please choose again.");
+		}			
 	}
 
 	public Country getCountry() {

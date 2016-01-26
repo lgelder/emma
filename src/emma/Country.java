@@ -312,24 +312,24 @@ public class Country{
 		return scores;
 	}
 	
-	public Place userInputCity(Scanner read){
-		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase(); //found this function on StackOverflow: 
-		Place city = findCity(selection);		//http://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
-		return city;
-	}
-	
-	public Place userInputEstate(Scanner read, City city){
-		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-		Place estate = findEstate(selection);
-		return estate;
-	}
-	
-	public Place userInputPerson(Scanner read, Estate estate){
-		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
-		Place person = findPerson(selection);
-		return person;
-	}
-	
+//	public Place userInputCity(Scanner read){
+//		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase(); //found this function on StackOverflow: 
+//		Place city = findCity(selection);		//http://stackoverflow.com/questions/18830813/how-can-i-remove-punctuation-from-input-text-in-java
+//		return city;
+//	}
+//	
+//	public Place userInputEstate(Scanner read, City city){
+//		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
+//		Place estate = findEstate(selection);
+//		return estate;
+//	}
+//	
+//	public Place userInputPerson(Scanner read, Estate estate){
+//		String selection = read.nextLine().replaceAll("[^a-zA-Z ]", "").toLowerCase();
+//		Place person = findPerson(selection);
+//		return person;
+//	}
+//	
 
 	
 	public void run(Scanner read){
@@ -371,8 +371,9 @@ public class Country{
 	}
 	
 	public Place findCity(String city){ //turn these into factories????
+		String cityString = city.replaceAll("[^a-zA-Z ]", "").toLowerCase();
 		for (Place c : cl){
-			if (c.getName().equals(city)){  
+			if (c.getName().replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(cityString)){  
 	        	return c;
 	        }
 		}
@@ -380,19 +381,23 @@ public class Country{
 	}
 
 	public Place findEstate(String estate){
+		String estateString = estate.replaceAll("[^a-zA-Z ]", "").toLowerCase();
 		for (Place c : cl){
 			for (Place e : c.getInsidePlaces()){
-				if (e.getName().equals(estate));
+				if (e.getName().replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(estateString)){
+					return e;
+				}
 			}
 		}
 		return new Estate("null", true);
 	}
 	
 	public Place findPerson(String person){
+		String personString = person.replaceAll("[^a-zA-Z ]", "").toLowerCase();
 		for (Place c : cl){
 			for (Place e : c.getInsidePlaces()){
 				for (Place p : e.getInsidePlaces()){
-					if (p.getName().equals(person)){
+					if (p.getName().replaceAll("[^a-zA-Z ]", "").toLowerCase().equals(personString)){
 						return p;
 					}
 				}
@@ -474,5 +479,11 @@ public class Country{
 	public State getState() {
 		return this.state;
 		
+	}
+	public void setUserName(String name){
+		this.userName = name;
+	}
+	public String getUserName(){
+		return this.userName;
 	}
 }

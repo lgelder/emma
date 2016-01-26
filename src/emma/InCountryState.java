@@ -23,7 +23,11 @@ public class InCountryState implements State {
 	@Override
 	public void entersOther(String text) {
 		Place city = country.findCity(text);
-		country.setState(new InCityState(country, city));
+		if (!city.getName().equals("null")){
+			country.setState(new InCityState(country, city));
+		} else {
+			System.out.println(text + " is not a city from the list. Please choose again.");
+		}
 	}
 	
 	public Country getCountry() {

@@ -1,20 +1,27 @@
 package emma;
 
+import java.util.List;
+
 public class InActivityState implements State{
 	private Country country;
-	private Place activity;
+	private Place person;
 	private String instructions;
+	private List<Activity> listOfAs;
 
-	public InActivityState(Country me, Place activity){
+	public InActivityState(Country me, Place person){
 		this.country = me;
-		this.activity = activity;
+		this.person = person;
+		for (Place a : person.getInsidePlaces()){
+			Activity act = (Activity)a;
+			listOfAs.add(act);
+		}
+		
 	}
 	
 
 	@Override
 	public void entersBack() {
-		// TODO Auto-generated method stub
-
+		country.setState(new InPersonState(country, person));
 	}
 
 	@Override
@@ -41,13 +48,13 @@ public class InActivityState implements State{
 
 	@Override
 	public void setPlace(Place place) {
-		this.activity = place;
+		this.person = place;
 	}
 
 
 	@Override
 	public Place getPlace() {
-		return this.activity;
+		return this.person;
 	}
 
 
