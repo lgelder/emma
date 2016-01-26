@@ -24,6 +24,10 @@ public class InPersonState implements State {
 		this.pcounter = pcounter;
 		this.ecounter = ecounter;
 		this.ccounter = ccounter;
+		if (this.acounter == this.person.getInsidePlaces().size()){
+			this.person.setCompleted(true);
+			this.country.setState(new InEstateState(this.country, this.city, this.estate, this.ccounter, this.ecounter, this.pcounter));
+		}
 		this.setInstructions("Hello, " + this.country.getUserName() + "! Would you like to attempt an activity?");
 		this.listOfAs = new ArrayList<Activity>();
 		for (Place a : this.person.getInsidePlaces()){
@@ -56,7 +60,7 @@ public class InPersonState implements State {
 			this.country.setState(new InEstateState(this.country, this.city, this.estate, this.ccounter, this.ecounter, this.pcounter));
 		}
 		this.person.getInsidePlaces().get(this.acounter).setCompleted(true);
-//		this.counter++;
+		this.pcounter++;
 		
 	}
 

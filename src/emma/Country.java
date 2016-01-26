@@ -417,7 +417,6 @@ public class Country{
 		System.out.println(thanksForPlaying);
 		
 	}
-
 	private void printHighScores() {
 		for ( HashMap.Entry<String, Integer> entry : scores.entrySet()) {
 		    String name = entry.getKey();
@@ -464,11 +463,9 @@ public class Country{
 	public String getUserName(){
 		return this.userName;
 	}
-
 	public List<Place> getCl() {
 		return cl;
 	}
-
 	public void setCl(List<Place> cl) {
 		this.cl = cl;
 	}

@@ -16,6 +16,10 @@ public class InEstateState implements State {
 		this.pcounter = pcounter;
 		this.ecounter = ecounter;
 		this.ccounter = ccounter;
+		if (this.pcounter == this.estate.getInsidePlaces().size()){
+			this.estate.setCompleted(true);
+			this.country.setState(new InCityState(this.country, this.city, this.ccounter, this.ecounter));
+		}
 		this.setInstructions("\nWelcome to " + this.estate.getName() + ", " + this.country.getUserName() 
 		+ "! Please select a person to interact with from the \nfollowing list:" + this.estate.getUncompletedPrintPlaces());
 

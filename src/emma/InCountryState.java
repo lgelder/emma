@@ -3,9 +3,6 @@ package emma;
 public class InCountryState implements State {
 	private Country country;
 	private String instructions;
-//	private int acounter;
-//	private int pcounter;
-//	private int ecounter;
 	private int ccounter;
 
 
