@@ -335,7 +335,7 @@ public class Austenia{
 		Scanner read = new Scanner(System.in);
 		String selection = "";
 		while (!getCompleted() && !selection.equals("exit")){
-			System.out.println("\nPlease select a city to which to travel from the following list:" + getUncompletedPrintCities());
+			System.out.println("\nHello, " + this.userName + "! \nPlease select a city to which to travel from the following list:" + getUncompletedPrintCities());
 			City city = userInputCity(read);
 			if (city.getName().equals("back") || (city.getName().equals("exit"))){
 				break;
